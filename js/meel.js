@@ -259,6 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateTotalValues(table) {
+    console.log("Updating total values for table:", table.id);
     var rows = table.querySelectorAll("tr:not(:first-child):not(:last-child)");
 
     // Initialize sum variables for each column
@@ -302,7 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
     totalFatsCell.textContent = totalFats.toFixed(2);
 
     // Set color to red if values exceed the specified daily norms
-    var dailyNormCals = 2100;
+    var dailyNormCals = result;
     var dailyNormProteins = (0.3 * dailyNormCals) / 4;
     var dailyNormFats = (0.3 * dailyNormCals) / 9;
     var dailyNormCarbs = (0.4 * dailyNormCals) / 4;
@@ -319,7 +320,7 @@ document.addEventListener("DOMContentLoaded", function () {
     addTooltip(totalProteinsCell, "Total proteins");
     addTooltip(totalCarbsCell, "Total carbs");
     addTooltip(totalFatsCell, "Total fats");
-
+    console.log("Total values updated successfully!");
     // Display total values for all tables in the separate container
     displayTotalValuesForAllTables();
   }
@@ -381,6 +382,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateTotalValuesForAllTables(totalValues) {
+    console.log("Updating total values for all tables");
     var totalContainer = document.getElementById("totalContainer");
 
     if (totalContainer) {
@@ -413,18 +415,22 @@ document.addEventListener("DOMContentLoaded", function () {
         totalValues.totalFats.toFixed(2) +
         "</span></p>";
     }
+    console.log("Total values for all tables updated successfully!");
   }
 
   function getColor(value, nutrient) {
+    console.log("Getting color for value:", value, "and nutrient:", nutrient);
     var dailyNorms = {
       grams: 75,
-      calories: 2100,
-      proteins: (0.3 * 2100) / 4,
-      fats: (0.3 * 2100) / 9,
-      carbs: (0.4 * 2100) / 4,
+      calories: result,
+      proteins: (0.3 * result) / 4,
+      fats: (0.3 * result) / 9,
+      carbs: (0.4 * result) / 4,
     };
 
-    return value > dailyNorms[nutrient] ? "red" : "white";
+    var color = value > dailyNorms[nutrient] ? "red" : "white";
+    console.log("Color:", color);
+    return color;
   }
 
   function getProductByName(name) {
@@ -505,4 +511,74 @@ document.addEventListener("DOMContentLoaded", function () {
     // Save the PDF
     pdf.save("mealTables.pdf");
   }
+  // Ждем загрузки документа
+  $(document).ready(function () {
+    $('input[name="availability"]').change(function () {
+      // Дополнительные действия после восстановления значений
+      restoreTableValues();
+      displayTotalValuesForAllTables();
+    });
+
+    $(".radio-button2").click(function () {
+      restoreTableValues();
+      displayTotalValuesForAllTables();
+    });
+
+    function restoreTableValues() {
+      // Для каждой таблицы
+      $(".second-section__table").each(function () {
+        var table = $(this);
+
+        // Для каждой строки таблицы (кроме первой)
+        table.find("tbody tr:gt(0)").each(function () {
+          var row = $(this);
+
+          // Находим инпут в текущей строке
+          var gramsInput = row.find("input.editable-grams");
+
+          // Проверяем, есть ли у нас инпут
+          if (gramsInput.length > 0) {
+            // Очищаем значение в инпуте
+            gramsInput.val("");
+
+            // Получаем доступ к другим ячейкам в строке
+            var cells = row.find("td:not(.last)");
+
+            // Очищаем текст в других ячейках
+            cells.text("");
+          }
+          row
+            .find("td.foo")
+            .html('<input type="text" class="editable-grams"/>');
+        });
+
+        /// Обнуляем значения в ячейке с общими итогами, начиная со второй ячейки
+        table
+          .find(".last.total")
+          .siblings()
+          .not(":first-child")
+          .each(function () {
+            $(this).text("0");
+            // Устанавливаем цвет текста на белый
+            $(this).css("color", "white");
+          });
+        // Восстановите исходные классы, чтобы вернуть исходные стили
+      });
+    }
+  });
+});
+$(document).ready(function () {
+  // Спрятать все после кнопки Calculate
+  $(".second-section__t").hide();
+  $(".week").hide();
+  $("#totalContainer").hide();
+  $(".second-section__buttonLast").hide();
+
+  // Показать содержимое после нажатия кнопки Calculate
+  $("#calculateButton").click(function () {
+    $(".second-section__t").show();
+    $(".week").show();
+    $("#totalContainer").show();
+    $(".second-section__buttonLast").show();
+  });
 });
