@@ -1,0 +1,213 @@
+@import "normalizes.scss"
+@import "resets.scss"
+
+*
+    box-sizing: border-box
+
+@font-face
+    font-family: "moseratT"
+    src: url('../fonts/Montserrat-SemiBold.ttf')
+    font-weight: 600
+    font-style: normal
+
+@font-face
+    font-family: "moseratT"
+    src: url('../fonts/Montserrat-Bold.ttf')
+    font-weight: bold
+    font-style: normal
+
+$color-black: #262726
+$color-grey: rgba(217, 217, 217, 0.10)
+
+html
+    font-family: "moseratT"
+    font-weight: 600
+    height: 100%
+
+body
+    height: 100%
+    margin: 0
+    background-repeat: no-repeat
+    background-attachment: fixed
+    background-size: 100%
+    background-image: linear-gradient(215deg,hsl(108deg 45% 34%) 0%,hsl(96deg 21% 23%) 33%,hsl(99deg 2% 15%) 67%,hsl(120deg 2% 9%) 100%)
+
+.container
+    max-width: 1140px
+    margin: 0 auto
+
+.main-section
+    position: relative
+    height: auto
+    padding-top: 16 px
+    overflow: hidden
+    margin-bottom: 71px
+    &__nav-container
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        height: 126px
+        align-items: center
+        margin-bottom: 160px
+    &__logo
+        width: 143px
+    &__content-container
+        position: relative
+        display: flex
+        flex-direction: row
+    &__search-zone
+        display: flex
+        justify-content: center
+        align-items: center
+        flex-direction: column
+    &__title
+        font-size: 48px
+        color: white
+        margin-bottom: 64px
+    &__zone-search
+        border-radius: 100px
+        border: none
+        width: 757px
+        height: 75px
+        margin-bottom: 69px
+        padding: 0 50px
+    &__button
+        display: flex
+        justify-content: center
+        align-items: center
+    &__buttons-add
+        width: 165px
+        height: 46px
+        background: #262726
+        color: white
+        border: none
+        border-radius: 10px
+        font-size: 32px
+        margin-right: 150px
+    &__buttons-filter
+        width: 165px
+        height: 46px
+        background: #262726
+        font-size: 32px
+        color: white
+        border: none
+        border-radius: 10px
+    &__buttons-delete
+        width: 100px
+        height: 50px
+        background: #262726
+        color: white
+        border: none
+        border-radius: 10px
+        font-size: 16px
+    &__search
+        position: relative
+    &__search-icon
+        position: absolute
+        top: 18px
+        left: 700px
+        color: #262726
+
+.nav-menu
+    &__list
+        display: flex
+        align-items: center
+        flex-direction: row
+    &__list-item
+        margin-right: 110px
+        font-size: 24px
+        color: white
+        &:last-child
+            margin-right: 0px
+
+.advice
+    display: flex
+    justify-content: center
+    align-items: center
+    background: $color-black
+    width: 138px
+    height: 31px
+    outline: 1px solid white
+
+select
+    text-align-last: center
+    padding-right: 0 39px
+
+.second-section
+    &__container
+        border-radius: 50px
+        background: rgba(217, 217, 217, 0.20)
+        width: 946px
+        height: 197px
+        display: flex
+        align-content: center
+        align-items: center
+        overflow-wrap: break-word
+        margin-bottom: 80px
+
+.advice-item
+    display: block
+    position: relative
+    left: 25px
+    margin-right: 25px
+    &__title
+        font-size: 24px
+        font-weight: bold
+        color: white
+        margin-bottom: 16px
+    &__text
+        font-size: 20px
+        font-weight: 600
+        color: white
+        margin-bottom: 15px
+
+a
+    text-decoration: none
+    &:visited
+        color: white
+
+.modal
+    display: none
+    position: fixed
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    width: 60%
+    max-width: 400px
+    height: auto
+    background-color: rgba(0, 0, 0, 0.5)
+    padding: 15px
+    border-radius: 8px
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3)
+    &-content
+        background-color: #fff
+        padding: 20px
+        border-radius: 8px
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3)
+
+.close-modal
+    cursor: pointer
+    font-size: 18px
+    color: #555
+    float: right
+    margin-top: -10px
+    margin-right: -10px
+
+/* Добавим стили для полей ввода, чтобы они были в столбик */
+.modal-content label
+    display: block
+    margin-bottom: 15px
+
+.modal-content textarea
+    margin-bottom: 15px
+
+.modal-content input
+    margin-bottom: 15px
+
+.modal-content button
+    display: block
+    margin-bottom: 15px
+
+.modal-content h2
+    display: block
+    margin-bottom: 15px

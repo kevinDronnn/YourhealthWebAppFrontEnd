@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Health / Recipes</title>
+    <script src="https://kit.fontawesome.com/025f6a69d7.js" crossorigin="anonymous"></script>
+    <link rel="apple-touch-icon" sizes="57x57" href="icons/fav/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="icons/fav/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/fav/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="icons/fav/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="icons/fav/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icons/fav/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/fav/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/fav/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/fav/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/fav/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/fav/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/fav/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/fav/favicon-16x16.png">
+    <link rel="manifest" href="icons/fav/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="icons/fav/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/recipes.js" defer></script>
+</head>
+<body>
+    <!-- Первая секция -->
+        <section class="main-section">
+            <div class="container main-section__nav-container">
+                <!-- Навигация -->
+                <header class="main-section__header">
+                    <a href="#"><img src="/images/Free_Sample_By_Wix-removebg-preview.png"
+                         alt="logo" class="main-section__logo"></a>
+                </header>
+                <nav class="main-section__nav nav-menu">
+                    <ul class="nav-menu__list">
+                        <li class="nav-menu__list-item"><a href="Home page.html">Home</a></li>
+                        <li class="nav-menu__list-item"><a href="Meel plan page.html">Meal Plan</a></li>
+                        <li class="nav-menu__list-item recipes"><a href="Recipes page.html">Recipes</a></li>
+                        <li class="nav-menu__list-item"><a href="Advices page.html">Advices</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+
+            <div class="main-section__search-zone zone">
+                <h1 class="main-section__title">Find your meal</h1>
+                    <div class="main-section__search">
+                        <input class="main-section__zone-search" type="text" id="searchInput" placeholder="Search">
+                        <img class="main-section__search-icon" src="icons/search.svg" alt="">
+                    </div>
+                <div class="main-section__button buttons">
+                    <button class="main-section__buttons-add" id="add">Add</button>
+                    
+                    <select class="main-section__buttons-filter" name="Filter" id="filter_list">
+                        <option value="reverse">New</option>
+                        <option value="original" selected>Oldest</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+        <section class="second-section">
+            <div class="container second-section__container" id="foodContainer">
+                <ul class="second-section__food-box">
+                    <li class="second-section__food-item food-item">
+                        <img class="food-item__img" height="370" width="370"
+                            src="images/Recipces Page/baiq-daling-ykThMylLsbY-unsplash.jpg" alt="">
+                        <h3 class="food-item__title">Food</h3>
+                        <p class="food-item__text">30 min</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="container second-section__container">
+                <ul class="second-section__food-box">
+                    <li class="second-section__food-item food-item">
+                        <img class="food-item__img" height="370" width="370"
+                            src="images/Recipces Page/baiq-daling-ykThMylLsbY-unsplash.jpg" alt="">
+                        <h3 class="food-item__title">eat</h3>
+                        <p class="food-item__text">30 min</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+</body>
+</html>

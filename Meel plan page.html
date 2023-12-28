@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Health / Meal Plan</title>
+    <link rel="stylesheet" href="css/style3.css">
+    <script src="https://kit.fontawesome.com/025f6a69d7.js" crossorigin="anonymous"></script>
+    <link rel="apple-touch-icon" sizes="57x57" href="icons/fav/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="icons/fav/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/fav/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="icons/fav/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="icons/fav/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icons/fav/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/fav/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/fav/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/fav/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/fav/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/fav/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/fav/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/fav/favicon-16x16.png">
+    <link rel="manifest" href="icons/fav/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="icons/fav/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"
+        integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
+        crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+
+
+
+    <!-- Include your other scripts after jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script type="module" src="js/meel.js" defer></script>
+</head>
+<body>
+    <!-- Первая секция -->
+        <section class="main-section">
+            <div class="container main-section__nav-container">
+                <!-- Навигация -->
+                <header class="main-section__header">
+                    <a href="#"><img src="/images/Free_Sample_By_Wix-removebg-preview.png"
+                         alt="logo" class="main-section__logo"></a>
+                </header>
+                <nav class="main-section__nav nav-menu">
+                    <ul class="nav-menu__list">
+                    <li class="nav-menu__list-item"><a href="Home page.html">Home</a></li>
+                    <li class="nav-menu__list-item meal"><a href="Meel plan page.html">Meal Plan</a></li>
+                    <li class="nav-menu__list-item"><a href="Recipes page.html">Recipes</a></li>
+                    <li class="nav-menu__list-item"><a href="Advices page.html">Advices</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+
+        <section class="second-section">
+            <h1 class="second-section__title">Nutrition calculator</h1>
+            <p class="second-section__text">This calculator uses a standard BMR equation (the Mifflin-St Jeor <br> formula) to estimate your Calorie needs. We also make
+            some rough <br> macronutrient suggestions, but you're free to completely customize <br> these values when you create a free
+            account.<br>
+            Keep in mind that this is a general estimate. For best results, consult <br> your healthcare provider.
+            </p>
+
+        <!-- Параграф и радиокнопки "I want to" -->
+        <p class="second-section__labels">I want to</p>
+
+        <!-- Радиокнопка "Lose weight" внутри лейбла -->
+        <input class="hidden-radio" type="radio" name="goal" id="loseWeightRadio" value="l">
+        <label class="radio-button" for="loseWeightRadio" >
+            Lose weight
+        </label>
+
+        <input class="hidden-radio" type="radio" name="goal" id="maintainRadio" value="m">
+        <label class="radio-button" for="maintainRadio" >
+            Maintain
+        </label>
+
+        <input class="hidden-radio" type="radio" name="goal" id="buildMuscleRadio" value="b">
+        <label class="radio-button" for="buildMuscleRadio" >
+            Build muscle
+        </label> <br>
+
+        <!-- Параграф и радиокнопки "I am" -->
+        <p class="second-section__labels">I am</p>
+
+        <input class="hidden-radio" type="radio" name="gender" id="femaleRadio" value="f">
+        <label class="radio-button" for="femaleRadio" >
+            Female
+        </label>
+    
+        <input class="hidden-radio" type="radio" name="gender" id="maleRadio" value="m">
+        <label class="radio-button" for="maleRadio" >
+            Male
+        </label><br>
+
+        <!-- Параграф и поля ввода для Height, Weight, Age -->
+        <p class="second-section__labels">Height</p>
+        <input class="input-text" type="text" placeholder="cm"> <br>
+        <p class="second-section__labels">Weight</p>
+        <input class="input-text" type="text" placeholder="kgs"> <br>
+        <p class="second-section__labels">Age</p>
+        <input class="input-text" type="text" placeholder="years"> <br>
+
+        <!-- Параграф и выпадающий список для Activity level -->
+        <p class="second-section__labels">Activity level</p>
+        <select class="second-section__select" name="Filter" id="">
+            <option value="1,2">Sedentary</option>
+            <option value="1,38">Lightly Active</option>
+            <option value="1,55" selected>Very Active</option>
+        </select>
+        <br>
+
+        <!-- Кнопка "Calculate" -->
+        <div class="second-section__button">
+            <input class="second-section__calculate" type="submit" value="Calculate" id="calculateButton"> <br>
+        </div>
+
+    <!-- Радиокнопки для выбора дней недели -->
+    <input class="hidden-radio" type="radio" name="availability" id="monRadio" value="Mon" checked>
+    <label class="radio-button2" for="monRadio">
+        Mon
+    </label>
+
+    <input class="hidden-radio" type="radio" name="availability" id="tueRadio" value="Tue">
+    <label class="radio-button2" for="tueRadio">
+        Tue
+    </label>
+
+    <input class="hidden-radio" type="radio" name="availability" id="wedRadio" value="Wed">
+    <label class="radio-button2" for="wedRadio">
+        Wed
+    </label>
+
+    <input class="hidden-radio" type="radio" name="availability" id="thuRadio" value="Thu">
+    <label class="radio-button2" for="thuRadio">
+        Thu
+    </label>
+
+    <input class="hidden-radio" type="radio" name="availability" id="friRadio" value="Fri">
+    <label class="radio-button2" for="friRadio">
+        Fri
+    </label>
+
+    <input class="hidden-radio" type="radio" name="availability" id="satRadio" value="Sat">
+    <label class="radio-button2" for="satRadio">
+        Sat
+    </label>
+
+    <input class="hidden-radio" type="radio" name="availability" id="sunRadio" value="Sun">
+    <label class="radio-button2" for="sunRadio">
+        Sun
+    </label><br>
+        <div class="second-section__t table-center">
+            <!-- Table 1 -->
+            <div id="myModal1" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div id="modalContent1"></div>
+                </div>
+            </div>
+            <table class="second-section__table" id="mealTable1">
+                <tbody>
+                    <tr>
+                        <td rowspan="7" class="last table-title">Meal 1</td>
+                        <td>Food</td>
+                        <td>Grams</td>
+                        <td>Cals</td>
+                        <td>Proteins(g)</td>
+                        <td>Carbs(g)</td>
+                        <td>Fats(g)</td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams1_1" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams1_2" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams1_3" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams1_4" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams1_5" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="last total">Total:</td>
+                        <td class="last total" id="totalGrams1">0</td>
+                        <td class="last total" id="totalCals1">0</td>
+                        <td class="last total" id="totalProteins1">0</td>
+                        <td class="last total" id="totalCarbs1">0</td>
+                        <td class="last total" id="totalFats1">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <!-- Table 2 -->
+            <div id="myModal2" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div id="modalContent2"></div>
+                </div>
+            </div>
+            <table class="second-section__table" id="mealTable2">
+                <tbody>
+                    <tr>
+                        <td rowspan="7" class="last table-title">Meal 2</td>
+                        <td>Food</td>
+                        <td>Grams</td>
+                        <td>Cals</td>
+                        <td>Proteins(g)</td>
+                        <td>Carbs(g)</td>
+                        <td>Fats(g)</td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams2_1" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams2_2" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams2_3" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams2_4" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams2_5" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="last total">Total:</td>
+                        <td class="last total" id="totalGrams2">0</td>
+                        <td class="last total" id="totalCals2">0</td>
+                        <td class="last total" id="totalProteins2">0</td>
+                        <td class="last total" id="totalCarbs2">0</td>
+                        <td class="last total" id="totalFats2">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <!-- Table 3 -->
+            <div id="myModal3" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div id="modalContent3"></div>
+                </div>
+            </div>
+            <table class="second-section__table" id="mealTable3">
+                <tbody>
+                    <tr>
+                        <td rowspan="7" class="last table-title">Meal 3</td>
+                        <td>Food</td>
+                        <td>Grams</td>
+                        <td>Cals</td>
+                        <td>Proteins(g)</td>
+                        <td>Carbs(g)</td>
+                        <td>Fats(g)</td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams3_1" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams3_2" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams3_3" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams3_4" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="food"></td>
+                        <td><input type="text" class="editable-grams" id="grams3_5" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="last total">Total:</td>
+                        <td class="last total" id="totalGrams3">0</td>
+                        <td class="last total" id="totalCals3">0</td>
+                        <td class="last total" id="totalProteins3">0</td>
+                        <td class="last total" id="totalCarbs3">0</td>
+                        <td class="last total" id="totalFats3">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <input class="second-section__buttonLast buttons" type="button" value="Save to pdf">
+        <button class="empty-tables-button">Empty Tables</button>
+
+    </section>
+</html>

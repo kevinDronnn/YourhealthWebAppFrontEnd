@@ -1,0 +1,149 @@
+@import "normalizes.scss"
+@import "resets.scss"
+
+*
+    box-sizing: border-box
+
+@font-face
+    font-family: "moseratT"
+    src: url('../fonts/Montserrat-SemiBold.ttf')
+    font-weight: 600
+    font-style: normal
+
+@font-face
+        font-family: "moseratT"
+        src: url('../fonts/Montserrat-Bold.ttf')
+        font-weight: bold
+        font-style: normal
+
+
+$color-black: #262726
+$color-grey: rgba(217, 217, 217, 0.10)
+
+html
+    font-family: "moseratT"
+    font-weight: 600
+    height: 100%
+
+body
+    height: 100%
+    margin: 0
+    background-repeat: no-repeat
+    background-attachment: fixed
+    background-size: 100%
+    background-image: linear-gradient(215deg,hsl(108deg 45% 34%) 0%,hsl(96deg 21% 23%) 33%,hsl(99deg 2% 15%) 67%,hsl(120deg 2% 9%) 100%)
+
+
+.container
+    max-width: 1140px
+    margin: 0 auto
+
+.main-section
+    position: relative
+    height: auto
+    padding-top: 16 px
+    overflow: hidden
+    margin-bottom: 100px
+    &__nav-container
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        height: 126px
+        width: 1109px
+        align-items: center
+        margin-bottom: 160px
+    &__logo
+        width: 143px
+    &__content-container
+        position: relative
+        display: flex
+        flex-direction: row
+
+
+.nav-menu
+    &__list
+        display: flex
+        align-items: center
+        flex-direction: row
+    &__list-item
+        margin-right: 110px
+        font-size: 24px
+        color: white
+        &:last-child
+            margin-right: 0px
+    
+.home
+    display: flex
+    justify-content: center
+    align-items: center
+    background: $color-black
+    width: 138px
+    height: 31px
+    outline:1px solid white
+
+h1
+    display: flex
+    justify-content: center
+    color: white
+    font-size: 48px
+    font-weight: bold
+    margin-bottom: 76px
+
+.third-section
+    position: relative
+    left: 20px
+    &__cards
+        display: flex
+        flex-direction: row
+        justify-content: center
+        margin-bottom: 100px
+    &__card-box
+        display: inline-flex
+        flex-direction: column
+        align-items: center
+        margin-right: 30px
+    &__image
+        border-radius: 15px
+        margin-bottom: 20px
+    &__title
+        margin-bottom: 20px
+        color: white
+        font-size: 24px
+    &__text
+        text-align: center
+        margin-bottom: 40px
+        color: white
+        font-size: 20px
+        height: 140px
+    &__input-link
+        color: white
+        font-size: 20px
+        background: #3B6C30
+        border-radius: 100px
+        border: none
+        width: 218px
+        height: 66px
+
+a
+    text-decoration: none
+    &:visited
+        color: white
+
+.second-section
+    margin-bottom: 80px
+    display: flex
+    justify-content: center
+    &__image-left
+        border-radius: 15px
+        margin-right: 40px
+    &__list-right
+        position: relative
+        top: 80px
+        text-align: center
+        height: 426px
+        width: 232px
+    &__list-row
+        font-size: 48px
+        margin-bottom: 36px
+        color: white
+    

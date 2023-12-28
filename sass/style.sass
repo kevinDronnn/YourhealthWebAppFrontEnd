@@ -1,0 +1,210 @@
+@import "normalizes.scss"
+@import "resets.scss"
+
+*
+    box-sizing: border-box
+
+@font-face
+    font-family: "moseratT"
+    src: url('../fonts/Montserrat-SemiBold.ttf')
+    font-weight: 600
+    font-style: normal
+
+@font-face
+        font-family: "moseratT"
+        src: url('../fonts/Montserrat-Bold.ttf')
+        font-weight: bold
+        font-style: normal
+
+
+$color-black: #262726
+$color-grey: rgba(217, 217, 217, 0.10)
+
+html
+    font-family: "moseratT"
+    font-weight: 600
+    height: 100%
+
+body
+    height: 100%
+    margin: 0
+    background-repeat: no-repeat
+    background-attachment: fixed
+    background-size: 100%
+    background-image: linear-gradient(215deg,hsl(108deg 45% 34%) 0%,hsl(96deg 21% 23%) 33%,hsl(99deg 2% 15%) 67%,hsl(120deg 2% 9%) 100%)
+
+
+.container
+    max-width: 1140px
+    margin: 0 auto
+
+.main-section
+    position: relative
+    height: auto
+    padding-top: 16 px
+    overflow: hidden
+    margin-bottom: 71px
+    &__nav-container
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        height: 126px
+        align-items: center
+        margin-bottom: 160px
+    &__logo
+        width: 143px
+    &__content-container
+        position: relative
+        display: flex
+        flex-direction: row
+    &__search-zone
+        display: flex
+        justify-content: center
+        align-items: center
+        flex-direction: column
+    &__title
+        font-size: 48px
+        color: white
+        margin-bottom: 64px
+    &__zone-search
+        border-radius: 100px
+        border: none
+        width: 757px
+        height: 75px
+        margin-bottom: 69px
+        padding: 0 50px
+    &__button
+        display: flex
+        justify-content: center
+        align-items: center
+    &__buttons-add
+        width: 165px
+        height: 46px
+        background: #262726
+        color: white
+        border: none
+        border-radius: 10px
+        font-size: 32px
+        margin-right: 150px
+    &__buttons-filter
+        width: 165px
+        height: 46px
+        background: #262726
+        font-size: 32px
+        color: white
+        border: none
+        border-radius: 10px
+    &__search
+        position: relative
+    &__search-icon
+        position: absolute
+        top: 18px
+        left: 700px
+        color: #262726
+
+.nav-menu
+    &__list
+        display: flex
+        align-items: center
+        flex-direction: row
+    &__list-item
+        margin-right: 110px
+        font-size: 24px
+        color: white
+        &:last-child
+            margin-right: 0px
+    
+.recipes
+    display: flex
+    justify-content: center
+    align-items: center
+    background: $color-black
+    width: 138px
+    height: 31px
+    outline:1px solid white
+
+select
+    text-align-last: center
+    padding-right: 0 39px
+
+
+.second-section
+    height: auto
+    position: relative
+    left: 65px
+    &__container 
+        border-radius: 15px
+        background: rgba(217, 217, 217, 0.10)
+        width: 370px
+        height: auto
+        display: inline-flex
+        margin-bottom: 111px
+        margin-right: 65px
+        
+        
+
+.food-item
+    &__img
+        margin-bottom: 10px
+        border-radius: 10px
+    &__title
+        font-size: 36px
+        font-weight: 600
+        color: white
+        text-align: center
+        margin-bottom: 20px
+    &__text
+        font-size: 36px
+        font-weight: 600
+        color: white
+        text-align: center
+        margin-bottom: 31px
+a
+    text-decoration: none
+    &:visited
+        color: white
+
+.modal 
+  display: none
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background-color: rgba(0, 0, 0, 0.5)
+
+
+.modal-content 
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  background-color: #fff
+  padding: 20px
+
+
+.close 
+  position: absolute
+  top: 0
+  right: 0
+  font-size: 20px
+  cursor: pointer
+
+
+#products-container 
+  margin-bottom: 10px
+
+
+.product-entry 
+  display: flex
+  margin-bottom: 5px
+
+
+.product, .grams 
+  margin-right: 5px
+
+
+textarea 
+  width: 100%
+  height: 100px
+
