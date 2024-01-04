@@ -551,8 +551,7 @@ select {
 
 .second-section {
   height: auto;
-  position: relative;
-  left: 65px;
+  margin-left: 65px;
 }
 .second-section__container {
   border-radius: 15px;
@@ -592,26 +591,6 @@ a:visited {
   color: white;
 }
 
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 20px;
-}
-
 .close {
   position: absolute;
   top: 0;
@@ -638,4 +617,168 @@ a:visited {
 textarea {
   width: 100%;
   height: 100px;
+  /* Styles for the modal */
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 70%;
+  max-width: 700px;
+  min-height: 400px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  color: black;
+}
+.modal-content {
+  background-color: #fff;
+  height: auto;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 700px;
+  min-height: 400px;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+#closeModal {
+  cursor: pointer;
+  font-size: 25px;
+  color: #555;
+  float: right;
+  margin-top: -10px;
+  margin-right: -10px;
+}
+
+#l-productList {
+  list-style: none;
+  margin-right: 15px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-bottom: 20px;
+  -ms-flex-line-pack: distribute;
+      align-content: space-around;
+}
+
+#r-productList {
+  list-style: none;
+  padding: 0;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  margin-bottom: 20px;
+  -ms-flex-line-pack: distribute;
+      align-content: space-around;
+}
+
+.lists {
+  display: block;
+}
+
+li {
+  margin-bottom: 20px;
+}
+
+.right {
+  width: 50px;
+}
+
+.modalBtnAdd {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100px;
+  height: 40px;
+  background: #262726;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  margin-right: 50px;
+}
+
+.modalBtnSub {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100px;
+  height: 40px;
+  background: #262726;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+.modalField {
+  border-radius: 100px;
+  width: 150px;
+  height: 30px;
+  border: 0.5px solid #262726;
+}
+
+.modalDesc {
+  border-radius: 10px;
+  min-width: 300px;
+  min-height: 100px;
+  border: 0.5px solid #262726;
+}
+
+.mar {
+  margin-bottom: 20px;
+}
+
+#add:hover {
+  background-color: rgba(214, 212, 212, 0.2392156863);
+  cursor: pointer;
+}
+
+#filter_list:hover {
+  background-color: rgba(214, 212, 212, 0.2392156863);
+  cursor: pointer;
+}
+
+#foodContainer:hover {
+  background-color: rgba(214, 212, 212, 0.2392156863);
+  cursor: pointer;
+}
+
+.left {
+  margin-right: 10px;
 }

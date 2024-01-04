@@ -22,6 +22,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="icons/fav/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/recipes.js" defer></script>
 </head>
@@ -53,7 +54,61 @@
                     </div>
                 <div class="main-section__button buttons">
                     <button class="main-section__buttons-add" id="add">Add</button>
-                    
+                    <!-- Modal content -->
+                    <div class="modal" id="modal">
+                        <div class="modal-content">
+                            <span class="close-button" id="closeModal">&times;</span>
+                            <!-- Your form content goes here -->
+    <form id="combinedForm" enctype="multipart/form-data">
+        <label for="name mar">Name:</label>
+        <input class="modalField mar" type="text" id="recipe_name" name="recipe_name" required><br>
+    
+        <p class="mar" for="description">Description:</p>
+        <textarea class="modalDesc mar" id="recipe_description" name="recipe_description"
+            placeholder="Describe how to make your recipe." required></textarea><br>
+    
+        <label class="mar" for="image">Image:</label>
+        <input class="img mar" type="file" id="recipe_image" name="recipe_image" accept="image/*"><br>
+    
+        <div class="modal" id="cropModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Crop Image</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="cropImage" src="" alt="Crop Image">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="cropButton">Crop</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="mar">Used products:</p>
+        <div class="lists">
+            <ul id="l-productList">
+                <li class="li-left"><input class="left modalField" type="text" name="products_name[]" placeholder="name">
+                     <input class="right modalField" type="text" name="products_grams[]" placeholder="grams"><br>
+                </li>
+                <li class="li-left"><input class="left modalField" type="text" name="products_name[]" placeholder="name">
+                     <input class="right modalField" type="text" name="products_grams[]" placeholder="grams"><br>
+                </li>
+                <li class="li-left"><input class="left modalField" type="text" name="products_name[]" placeholder="name"> 
+                    <input class="right modalField" type="text" name="products_grams[]" placeholder="grams"><br>
+                </li>
+            </ul>
+        </div>
+        <button class="modalBtnAdd" id="addFields">Add</button>
+        <input class="modalBtnSub" type="button" value="Submit" id="submitButton">
+    </form>
+                        </div>
+                    </div>
                     <select class="main-section__buttons-filter" name="Filter" id="filter_list">
                         <option value="reverse">New</option>
                         <option value="original" selected>Oldest</option>
@@ -62,27 +117,7 @@
             </div>
         </section>
         <section class="second-section">
-            <div class="container second-section__container" id="foodContainer">
-                <ul class="second-section__food-box">
-                    <li class="second-section__food-item food-item">
-                        <img class="food-item__img" height="370" width="370"
-                            src="images/Recipces Page/baiq-daling-ykThMylLsbY-unsplash.jpg" alt="">
-                        <h3 class="food-item__title">Food</h3>
-                        <p class="food-item__text">30 min</p>
-                    </li>
-                </ul>
-            </div>
 
-            <div class="container second-section__container">
-                <ul class="second-section__food-box">
-                    <li class="second-section__food-item food-item">
-                        <img class="food-item__img" height="370" width="370"
-                            src="images/Recipces Page/baiq-daling-ykThMylLsbY-unsplash.jpg" alt="">
-                        <h3 class="food-item__title">eat</h3>
-                        <p class="food-item__text">30 min</p>
-                    </li>
-                </ul>
-            </div>
         </section>
 </body>
 </html>

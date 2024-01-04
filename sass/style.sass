@@ -11,11 +11,10 @@
     font-style: normal
 
 @font-face
-        font-family: "moseratT"
-        src: url('../fonts/Montserrat-Bold.ttf')
-        font-weight: bold
-        font-style: normal
-
+    font-family: "moseratT"
+    src: url('../fonts/Montserrat-Bold.ttf')
+    font-weight: bold
+    font-style: normal
 
 $color-black: #262726
 $color-grey: rgba(217, 217, 217, 0.10)
@@ -32,7 +31,6 @@ body
     background-attachment: fixed
     background-size: 100%
     background-image: linear-gradient(215deg,hsl(108deg 45% 34%) 0%,hsl(96deg 21% 23%) 33%,hsl(99deg 2% 15%) 67%,hsl(120deg 2% 9%) 100%)
-
 
 .container
     max-width: 1140px
@@ -113,7 +111,7 @@ body
         color: white
         &:last-child
             margin-right: 0px
-    
+
 .recipes
     display: flex
     justify-content: center
@@ -121,18 +119,16 @@ body
     background: $color-black
     width: 138px
     height: 31px
-    outline:1px solid white
+    outline: 1px solid white
 
 select
     text-align-last: center
     padding-right: 0 39px
 
-
 .second-section
     height: auto
-    position: relative
-    left: 65px
-    &__container 
+    margin-left: 65px
+    &__container
         border-radius: 15px
         background: rgba(217, 217, 217, 0.10)
         width: 370px
@@ -140,8 +136,6 @@ select
         display: inline-flex
         margin-bottom: 111px
         margin-right: 65px
-        
-        
 
 .food-item
     &__img
@@ -159,52 +153,143 @@ select
         color: white
         text-align: center
         margin-bottom: 31px
+
 a
     text-decoration: none
     &:visited
         color: white
 
-.modal 
-  display: none
-  position: fixed
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  background-color: rgba(0, 0, 0, 0.5)
+.close
+    position: absolute
+    top: 0
+    right: 0
+    font-size: 20px
+    cursor: pointer
 
+#products-container
+    margin-bottom: 10px
 
-.modal-content 
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translate(-50%, -50%)
-  background-color: #fff
-  padding: 20px
+.product-entry
+    display: flex
+    margin-bottom: 5px
 
+.product, .grams
+    margin-right: 5px
 
-.close 
-  position: absolute
-  top: 0
-  right: 0
-  font-size: 20px
-  cursor: pointer
+textarea
+    width: 100%
+    height: 100px
 
+       /* Styles for the modal */
+.modal
+    display: none
+    position: fixed
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    width: 70%
+    max-width: 700px
+    min-height: 400px
+    background-color: rgba(0, 0, 0, 0.5)
+    padding: 15px
+    border-radius: 8px
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3)
+    color: black
+    &-content
+        background-color: #fff
+        height: auto
+        padding: 20px
+        border-radius: 8px
+        max-width: 700px
+        min-height: 400px
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3)
 
-#products-container 
-  margin-bottom: 10px
+#closeModal
+    cursor: pointer
+    font-size: 25px
+    color: #555
+    float: right
+    margin-top: -10px
+    margin-right: -10px
 
+#l-productList
+    list-style: none
+    margin-right: 15px
+    display: inline-flex
+    flex-direction: column
+    flex-wrap: wrap
+    margin-bottom: 20px
+    align-content: space-around
 
-.product-entry 
-  display: flex
-  margin-bottom: 5px
+#r-productList
+    list-style: none
+    padding: 0
+    display: inline-flex
+    flex-direction: column
+    justify-content: center
+    align-items: flex-start
+    margin-bottom: 20px
+    align-content: space-around
 
+.lists
+    display: block
 
-.product, .grams 
-  margin-right: 5px
+li
+    margin-bottom: 20px
 
+.right
+    width: 50px
 
-textarea 
-  width: 100%
-  height: 100px
+.modalBtnAdd
+    display: inline-flex
+    justify-content: center
+    align-items: center
+    width: 100px
+    height: 40px
+    background: #262726
+    color: white
+    border: none
+    border-radius: 10px
+    font-size: 18px
+    margin-right: 50px
+.modalBtnSub
+    display: inline-flex
+    justify-content: center
+    align-items: center
+    width: 100px
+    height: 40px
+    background: #262726
+    color: white
+    border: none
+    border-radius: 10px
+    font-size: 18px
 
+.modalField
+    border-radius: 100px
+    width: 150px
+    height: 30px
+    border: 0.5px solid #262726
+
+.modalDesc
+    border-radius: 10px
+    min-width: 300px
+    min-height: 100px
+    border: 0.5px solid #262726
+
+.mar
+    margin-bottom: 20px
+
+#add:hover
+    background-color: #d6d4d43d
+    cursor: pointer
+
+#filter_list:hover
+    background-color: #d6d4d43d
+    cursor: pointer
+
+#foodContainer:hover
+    background-color: #d6d4d43d
+    cursor: pointer
+
+.left
+    margin-right: 10px
