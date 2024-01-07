@@ -139,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           products.forEach(function (product) {
             var button = document.createElement("button");
+            button.classList.add("buttonModal");
             button.textContent = product.name;
 
             // Add an event listener for the button
