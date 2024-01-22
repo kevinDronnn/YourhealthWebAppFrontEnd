@@ -76,17 +76,17 @@ const filterList = document.getElementById("filter_list");
 const searchInput = document.getElementById("searchInput");
 
 function openModalSecond(recipe) {
-  // Создайте второе модальное окно
+
   const modalSecond = document.createElement("div");
   modalSecond.classList.add("modal-second");
   const naming = recipe.image;
   const extension = naming.substring(naming.lastIndexOf("\\"));
 
-  // Добавьте уникальные данные для рецепта во второе модальное окно
+
   const modalContentSecond = document.createElement("div");
   modalContentSecond.classList.add("modal-content-second");
 
-  // Создайте div контейнер для элементов после заголовка
+ 
   const contentContainer = document.createElement("div");
   contentContainer.classList.add("containerModal");
   const imageElement = document.createElement("img");
@@ -104,12 +104,12 @@ function openModalSecond(recipe) {
   descriptionElement.innerText = recipe.description;
   modalContentSecond.appendChild(imageElement);
   modalContentSecond.appendChild(headerElement);
-  // Добавьте заголовок "Product List:"
+
   const productListHeading = document.createElement("h3");
   productListHeading.classList.add("head")
   productListHeading.innerText = "Product List:";
   modalContentSecond.appendChild(productListHeading);
-  // Добавьте список продуктов
+
   const productList = document.createElement("ul");
   productList.classList.add("product-list");
   recipe.products.forEach((product) => {
@@ -117,17 +117,14 @@ function openModalSecond(recipe) {
     listItem.innerText = `${product.productName}: ${product.grams} grams`;
     productList.appendChild(listItem);
   });
-  // Добавьте элементы в div контейнер
   contentContainer.appendChild(descriptionElement);
   contentContainer.appendChild(productListHeading);
   contentContainer.appendChild(productList);
   modalContentSecond.appendChild(contentContainer);
 
-  // Добавьте второе модальное окно в DOM
   modalSecond.appendChild(modalContentSecond);
   document.body.appendChild(modalSecond);
 
-  // Закрывайте второе модальное окно при клике на фоне
   modalSecond.addEventListener("click", (event) => {
     if (event.target === modalSecond) {
       modalSecond.remove();
