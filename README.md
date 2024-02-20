@@ -19,6 +19,7 @@ explore diverse culinary options, or simply adopt healthier eating habits, my pl
 
 <ul>
   <li>CSS</li>
+  <li>Sass</li>
   <li>HTML</li>
   <li>JavaScript</li>
 </ul>
