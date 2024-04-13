@@ -46,6 +46,7 @@
                     <li class="nav-menu__list-item meal"><a href="Meel plan page.html">Meal Plan</a></li>
                     <li class="nav-menu__list-item"><a href="Recipes page.html">Recipes</a></li>
                     <li class="nav-menu__list-item"><a href="Advices page.html">Advices</a></li>
+                    <li class="nav-menu__list-item"><a href="loginPage.html">Login</a></li>
                     </ul>
                 </nav>
             </div>
@@ -69,7 +70,7 @@
         </label>
 
         <input class="hidden-radio" type="radio" name="goal" id="maintainRadio" value="m">
-        <label class="radio-button" for="maintainRadio" >
+        <label class="radio-button" for="maintainRadio">
             Maintain
         </label>
 
@@ -86,22 +87,22 @@
             Female
         </label>
     
-        <input class="hidden-radio" type="radio" name="gender" id="maleRadio" value="m">
-        <label class="radio-button" for="maleRadio" >
+        <input class="hidden-radio" type="radio" name="gender" id="maleRadio" value="m"> 
+        <label class="radio-button" for="maleRadio">
             Male
         </label><br>
 
         <!-- Параграф и поля ввода для Height, Weight, Age -->
         <p class="second-section__labels">Height</p>
-        <input class="input-text" type="text" placeholder="cm"> <br>
+        <input class="input-text" type="text" placeholder="cm" required> <br>
         <p class="second-section__labels">Weight</p>
-        <input class="input-text" type="text" placeholder="kgs"> <br>
+        <input class="input-text" type="text" placeholder="kgs" required> <br>
         <p class="second-section__labels">Age</p>
-        <input class="input-text" type="text" placeholder="years"> <br>
+        <input class="input-text" type="text" placeholder="years" required> <br>
 
         <!-- Параграф и выпадающий список для Activity level -->
         <p class="second-section__labels">Activity level</p>
-        <select class="second-section__select" name="Filter" id="">
+        <select class="second-section__select" name="Filter" id="" required>
             <option value="1,2">Sedentary</option>
             <option value="1,38">Lightly Active</option>
             <option value="1,55" selected>Very Active</option>
@@ -110,7 +111,7 @@
 
         <!-- Кнопка "Calculate" -->
         <div class="second-section__button">
-            <input class="second-section__calculate" type="submit" value="Calculate" id="calculateButton"> <br>
+            <input class="second-section__calculate" type="submit" value="Calculate" id="calculateButton" > <br>
         </div>
 
 <div class="week">

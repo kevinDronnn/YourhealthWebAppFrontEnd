@@ -1,3 +1,49 @@
+let globalData; // Глобальная переменная для хранения данных
+document.addEventListener("DOMContentLoaded", function () {
+  // Функция для получения JWT токена из localStorage
+  function getToken() {
+    return localStorage.getItem("token");
+  }
+
+  // Функция для отправки аутентифицированных запросов с использованием JWT токена
+  function sendAuthenticatedRequest(url, options) {
+    // Получаем JWT токен из localStorage
+    const token = getToken();
+
+    // Добавляем токен к заголовкам запроса
+    if (token) {
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+      };
+    }
+
+    // Отправляем запрос с обновленными опциями
+    return fetch(url, options);
+  }
+
+  sendAuthenticatedRequest("http://localhost:8080/getCurrentParticipant", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Используем данные напрямую внутри обработчика события
+      console.log(data); // Выводим данные в консоль или делаем другие операции
+      globalData = data; // Сохраняем данные в глобальной переменной при необходимости
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+});
+
 const getAdvices = async () => {
   const response = await fetch("http://localhost:8080/api/advices");
   const advices = await response.json();
@@ -38,6 +84,11 @@ function renderAdviceItem(parent, item) {
   const child_div2 = document.createElement("ul");
   const child_div3 = document.createElement("li");
   const title = document.createElement("h3");
+  const authorName = document.createElement("h3");
+  const mainTitleDiv = document.createElement("div");
+  const TitleDiv = document.createElement("div");
+  const AuthorDiv = document.createElement("div");
+
   const paragraph = document.createElement("p");
   const deleteButton = document.createElement("button");
 
@@ -46,15 +97,27 @@ function renderAdviceItem(parent, item) {
   child_div2.classList.add("second-section__advice-box");
   child_div3.classList.add("second-section__advice-item");
   child_div3.classList.add("advice-item");
+
+  mainTitleDiv.classList.add("advice-item__mainTitleDiv");
+  TitleDiv.classList.add("advice-item__TitleDiv");
+  AuthorDiv.classList.add("advice-item__AuthorDiv");
+
   title.classList.add("advice-item__title");
+  authorName.classList.add("advice-item__authorName");
   paragraph.classList.add("advice-item__text");
   deleteButton.classList.add("main-section__buttons-delete");
 
   title.innerText = item.title;
+  authorName.innerText = "Author: ";
+  authorName.innerText += item.authorName;
   paragraph.innerText = item.description;
   deleteButton.innerText = "Delete";
 
-  child_div3.append(title, paragraph, deleteButton);
+  TitleDiv.append(title);
+  AuthorDiv.append(authorName);
+  mainTitleDiv.append(TitleDiv, AuthorDiv);
+
+  child_div3.append(mainTitleDiv, paragraph, deleteButton);
   child_div2.append(child_div3);
   child_div.append(child_div2);
   parent.appendChild(child_div);
@@ -88,7 +151,11 @@ const closeModalButton = document.getElementById("closeModal");
 const submitButton = document.getElementById("submitAdvice");
 
 addButton.addEventListener("click", () => {
-  modal.style.display = "block";
+  if (globalData.username != null || !isNaN(globalData.username)) {
+    modal.style.display = "block";
+  } else {
+    window.location.href = "loginPage.html";
+  }
 });
 
 closeModalButton.addEventListener("click", () => {
@@ -99,7 +166,7 @@ submitButton.addEventListener("click", async () => {
   const titleInput = document.getElementById("titleInput").value;
   const descriptionInput = document.getElementById("descriptionInput").value;
 
-  if (titleInput && descriptionInput) {
+  if (titleInput != "" && descriptionInput != "") {
     await fetch("http://localhost:8080/api/advice", {
       method: "POST",
       headers: {
@@ -108,11 +175,14 @@ submitButton.addEventListener("click", async () => {
       body: JSON.stringify({
         title: titleInput,
         description: descriptionInput,
+        authorName: globalData.username,
       }),
     });
 
     modal.style.display = "none";
     await updateAdvices();
+  } else {
+    alert("Please enter all information.");
   }
 });
 

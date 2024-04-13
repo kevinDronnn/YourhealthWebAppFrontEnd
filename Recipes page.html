@@ -41,6 +41,7 @@
                         <li class="nav-menu__list-item"><a href="Meel plan page.html">Meal Plan</a></li>
                         <li class="nav-menu__list-item recipes"><a href="Recipes page.html">Recipes</a></li>
                         <li class="nav-menu__list-item"><a href="Advices page.html">Advices</a></li>
+                        <li class="nav-menu__list-item"><a href="loginPage.html">Login</a></li>
                     </ul>
                 </nav>
             </div>
@@ -68,9 +69,9 @@
             placeholder="Describe how to make your recipe." required></textarea><br>
     
         <label class="mar" for="image">Image:</label>
-        <input class="img mar" type="file" id="recipe_image" name="recipe_image" accept="image/*"><br>
+        <input class="img mar" type="file" id="recipe_image" name="recipe_image" accept="image/*" required><br>
     
-        <div class="modal" id="cropModal" tabindex="-1" role="dialog">
+        <!-- <div class="modal" id="cropModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -88,7 +89,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <p class="mar">Used products:</p>
         <div class="lists">
@@ -104,7 +105,7 @@
                 </li>
             </ul>
         </div>
-        <button class="modalBtnAdd" id="addFields">Add</button>
+        <button class="modalBtnAdd" id="addFields">Add rows</button>
         <input class="modalBtnSub" type="button" value="Submit" id="submitButton">
     </form>
                         </div>
