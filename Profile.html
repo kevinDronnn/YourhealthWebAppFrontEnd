@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Health / Home</title>
+    <title>Your Health / Profile</title>
     <link rel="stylesheet" href="css/profile.css">
     <script src="https://kit.fontawesome.com/025f6a69d7.js" crossorigin="anonymous"></script>
     <link rel="apple-touch-icon" sizes="57x57" href="icons/fav/apple-icon-57x57.png">
@@ -53,8 +53,8 @@
             <div class="second-section__content">
 
                 <h2 class="second-section__content-title">Your credentials</h2>
-                <p class="second-section__content-email">Email:</p>
-                <p class="second-section__content-username">Username:</p>
+                <p class="second-section__content-email" id="userEmail">Email:</p>
+                <p class="second-section__content-username" id="userUsername">Username:</p>
 
                 <div class="second-section__content-buttons">
                     <input type="submit" value="Change Password" class="second-section__content-changePassword" onclick="openModal()">
@@ -114,7 +114,7 @@
                 <h2 class="fourth-section__container-title globTitle">Your recipes</h2>
                 <hr class="fourth-section__container-hr globHr">
 
-                <div class="fourth-section__content content">
+                <div class="fourth-section__content content2" id="recipeContent">
                     
                 </div>
             </div>

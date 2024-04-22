@@ -1,4 +1,5 @@
-let globalData; // Глобальная переменная для хранения данных
+let globalData = localStorage.getItem("username"); // Глобальная переменная для хранения данных
+let authority = localStorage.getItem("authority"); // Глобальная переменная для хранения данных
 document.addEventListener("DOMContentLoaded", function () {
   // Функция для получения JWT токена из localStorage
   function getToken() {
@@ -36,8 +37,15 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .then((data) => {
       // Используем данные напрямую внутри обработчика события
-      console.log(data); // Выводим данные в консоль или делаем другие операции
-      globalData = data; // Сохраняем данные в глобальной переменной при необходимости
+      // console.log(data); // Выводим данные в консоль или делаем другие операции
+      // globalData = data; // Сохраняем данные в глобальной переменной при необходимости
+      if (globalData && globalData != null && globalData != "anonymousUser") {
+        const navMenuList = document.querySelector(".nav-menu__list");
+        const lastListItem = navMenuList.lastElementChild;
+        const lastLink = lastListItem.querySelector("a");
+        lastLink.setAttribute("href", "Profile.html");
+        lastLink.innerText = "Profile";
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -117,7 +125,12 @@ function renderAdviceItem(parent, item) {
   AuthorDiv.append(authorName);
   mainTitleDiv.append(TitleDiv, AuthorDiv);
 
-  child_div3.append(mainTitleDiv, paragraph, deleteButton);
+  if (authority === "ADMIN") {
+    child_div3.append(mainTitleDiv, paragraph, deleteButton);
+  } else {
+    child_div3.append(mainTitleDiv, paragraph);
+  }
+
   child_div2.append(child_div3);
   child_div.append(child_div2);
   parent.appendChild(child_div);
@@ -151,7 +164,7 @@ const closeModalButton = document.getElementById("closeModal");
 const submitButton = document.getElementById("submitAdvice");
 
 addButton.addEventListener("click", () => {
-  if (globalData.username != null || !isNaN(globalData.username)) {
+  if (globalData != null || !isNaN(globalData)) {
     modal.style.display = "block";
   } else {
     window.location.href = "loginPage.html";
@@ -175,7 +188,7 @@ submitButton.addEventListener("click", async () => {
       body: JSON.stringify({
         title: titleInput,
         description: descriptionInput,
-        authorName: globalData.username,
+        authorName: globalData,
       }),
     });
 

@@ -322,6 +322,8 @@ li
 
 .modal-content
     text-align: center
+    overflow-y: auto
+    max-height: 90vh
 
 .modal-second
     position: fixed
@@ -488,3 +490,37 @@ li
     color: black
     font-size: 18px
     margin-left: 10px
+
+.recipeInfoDiv
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    margin-bottom: 30px
+
+.recipeInfoPAdd
+    margin-bottom: 30px
+    width: 100px
+
+/* Стили для прокрутки */
+.modal-content::-webkit-scrollbar
+    width: 10px
+    border-radius: 5px
+
+/* Стили для фона прокрутки */
+.modal-content::-webkit-scrollbar-track
+    background: #d6d4d43d
+    border-radius: 5px
+
+/* Стили для бегунка прокрутки */
+.modal-content::-webkit-scrollbar-thumb
+    background: #888
+    border-radius: 5px
+
+/* Стили для бегунка прокрутки при наведении */
+.modal-content::-webkit-scrollbar-thumb:hover
+    background: #555
+
+.recipeInfoP
+    font-size: 18px
+    margin-bottom: 20px

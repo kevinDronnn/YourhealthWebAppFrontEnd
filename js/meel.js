@@ -1,3 +1,56 @@
+let globalData = localStorage.getItem("username"); // Глобальная переменная для хранения данных
+document.addEventListener("DOMContentLoaded", function () {
+  // Функция для получения JWT токена из localStorage
+  function getToken() {
+    return localStorage.getItem("token");
+  }
+
+  // Функция для отправки аутентифицированных запросов с использованием JWT токена
+  function sendAuthenticatedRequest(url, options) {
+    // Получаем JWT токен из localStorage
+    const token = getToken();
+
+    // Добавляем токен к заголовкам запроса
+    if (token) {
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+      };
+    }
+
+    // Отправляем запрос с обновленными опциями
+    return fetch(url, options);
+  }
+
+  sendAuthenticatedRequest("http://localhost:8080/getCurrentParticipant", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Используем данные напрямую внутри обработчика события
+      // console.log(data); // Выводим данные в консоль или делаем другие операции
+      // globalData = data; // Сохраняем данные в глобальной переменной при необходимости
+      if (globalData && globalData != null && globalData != "anonymousUser") {
+        const navMenuList = document.querySelector(".nav-menu__list");
+        const lastListItem = navMenuList.lastElementChild;
+        const lastLink = lastListItem.querySelector("a");
+        lastLink.setAttribute("href", "Profile.html");
+        lastLink.innerText = "Profile";
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+});
+
 $(document).ready(function () {
   var lastSelectedLabel = null;
 
@@ -58,11 +111,11 @@ function calculateAndOutputResult() {
     gender !== undefined &&
     goal !== undefined
   ) {
-    console.log("Result of calculation:", weight);
-    console.log("Result of calculation:", height);
-    console.log("Result of calculation:", age);
-    console.log("Result of calculation:", activityLevel);
-    console.log("Result of calculation:", gender);
+    // console.log("Result of calculation:", weight);
+    // console.log("Result of calculation:", height);
+    // console.log("Result of calculation:", age);
+    // console.log("Result of calculation:", activityLevel);
+    // console.log("Result of calculation:", gender);
 
     var result =
       (weight * 10 + height * 6.25 - age * 5 + (gender === "m" ? 5 : -161)) *
@@ -95,6 +148,7 @@ document
 document.addEventListener("DOMContentLoaded", function () {
   var selectedCell;
   var products;
+  var recipes;
 
   fetch("http://localhost:8080/api/products")
     .then((response) => response.json())
@@ -103,6 +157,12 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.error("Error loading products:", error));
 
+  fetch(`http://localhost:8080/api/recipe/author/${globalData}`)
+    .then((data) => data.json())
+    .then((loadedRecipes) => {
+      recipes = loadedRecipes;
+    })
+    .catch((error) => console.error("Error loading recipes:", error));
   for (let i = 1; i <= 3; i++) {
     initializeTableListeners(i);
   }
@@ -116,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
   totalContainer.style.left = "100px";
 
   document.body.appendChild(totalContainer);
-
+  let which;
   function initializeTableListeners(tableIndex) {
     var tableId = "mealTable" + tableIndex;
     var modalId = "myModal" + tableIndex;
@@ -137,12 +197,14 @@ document.addEventListener("DOMContentLoaded", function () {
           products.forEach(function (product) {
             var button = document.createElement("button");
             button.classList.add("buttonModal");
+            button.setAttribute("name", "product");
             button.textContent = product.name;
+            console.log(product);
 
             button.addEventListener("click", function () {
-              if (selectedCell) {
+              if (selectedCell && button.getAttribute("name") == "product") {
                 var row = selectedCell.closest("tr");
-
+                which = "product";
                 var gramsInput = row.querySelector(".editable-grams");
                 gramsInput.value = product.grams;
 
@@ -174,7 +236,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
             modalContent.appendChild(button);
           });
+          /////////////////////////////////////////////////
+          recipes.forEach(function (recipe) {
+            var button = document.createElement("button");
+            button.classList.add("buttonModal");
+            button.textContent = recipe.name;
+            button.setAttribute("name", "recipe");
+            console.log(recipe);
 
+            button.addEventListener("click", function () {
+              if (selectedCell && button.getAttribute("name") == "recipe") {
+                var row = selectedCell.closest("tr");
+                which = "recipe";
+                var gramsInput = row.querySelector(".editable-grams");
+                gramsInput.value = recipe.grams;
+
+                row.cells[0].textContent = recipe.name;
+                row.cells[2].textContent = (
+                  (recipe.cals * (parseFloat(gramsInput.value) || 0)) /
+                  recipe.grams
+                ).toFixed(2);
+                row.cells[3].textContent = (
+                  (recipe.proteins * (parseFloat(gramsInput.value) || 0)) /
+                  recipe.grams
+                ).toFixed(2);
+                row.cells[4].textContent = (
+                  (recipe.carbs * (parseFloat(gramsInput.value) || 0)) /
+                  recipe.grams
+                ).toFixed(2);
+                row.cells[5].textContent = (
+                  (recipe.fats * (parseFloat(gramsInput.value) || 0)) /
+                  recipe.grams
+                ).toFixed(2);
+
+                updateTotalValues(table);
+                updateTotalValuesForAllTables();
+                displayTotalValuesForAllTables();
+              }
+
+              document.getElementById(modalId).style.display = "none";
+            });
+
+            modalContent.appendChild(button);
+          });
+          ////////////////////////////////////////////////
           document.getElementById(modalId).style.display = "block";
         } else {
           console.error(modalContentId + " element not found");
@@ -186,31 +291,52 @@ document.addEventListener("DOMContentLoaded", function () {
       var targetInput = event.target;
 
       if (targetInput.classList.contains("editable-grams")) {
-        if (!products) {
+        if (!products && !recipes) {
           console.error("Products array not loaded");
           return;
         }
 
-        var row = targetInput.closest("tr");
-        var product = getProductByName(row.cells[0].textContent);
+        if (which == "product") {
+          var row = targetInput.closest("tr");
+          var product = getProductByName(row.cells[0].textContent);
 
-        row.cells[2].textContent = (
-          (product.cals * (parseFloat(targetInput.value) || 0)) /
-          product.grams
-        ).toFixed(2);
-        row.cells[3].textContent = (
-          (product.proteins * (parseFloat(targetInput.value) || 0)) /
-          product.grams
-        ).toFixed(2);
-        row.cells[4].textContent = (
-          (product.carbs * (parseFloat(targetInput.value) || 0)) /
-          product.grams
-        ).toFixed(2);
-        row.cells[5].textContent = (
-          (product.fats * (parseFloat(targetInput.value) || 0)) /
-          product.grams
-        ).toFixed(2);
+          row.cells[2].textContent = (
+            (product.cals * (parseFloat(targetInput.value) || 0)) /
+            product.grams
+          ).toFixed(2);
+          row.cells[3].textContent = (
+            (product.proteins * (parseFloat(targetInput.value) || 0)) /
+            product.grams
+          ).toFixed(2);
+          row.cells[4].textContent = (
+            (product.carbs * (parseFloat(targetInput.value) || 0)) /
+            product.grams
+          ).toFixed(2);
+          row.cells[5].textContent = (
+            (product.fats * (parseFloat(targetInput.value) || 0)) /
+            product.grams
+          ).toFixed(2);
+        } else {
+          var row = targetInput.closest("tr");
+          var recipe = getRecipeByName(row.cells[0].textContent);
 
+          row.cells[2].textContent = (
+            (recipe.cals * (parseFloat(targetInput.value) || 0)) /
+            recipe.grams
+          ).toFixed(2);
+          row.cells[3].textContent = (
+            (recipe.proteins * (parseFloat(targetInput.value) || 0)) /
+            recipe.grams
+          ).toFixed(2);
+          row.cells[4].textContent = (
+            (recipe.carbs * (parseFloat(targetInput.value) || 0)) /
+            recipe.grams
+          ).toFixed(2);
+          row.cells[5].textContent = (
+            (recipe.fats * (parseFloat(targetInput.value) || 0)) /
+            recipe.grams
+          ).toFixed(2);
+        }
         updateTotalValues(table);
         displayTotalValuesForAllTables();
       }
@@ -243,7 +369,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateTotalValues(table) {
-    console.log("Updating total values for table:", table.id);
+    // console.log("Updating total values for table:", table.id);
     var rows = table.querySelectorAll("tr:not(:first-child):not(:last-child)");
 
     var totalGrams = 0,
@@ -299,10 +425,10 @@ document.addEventListener("DOMContentLoaded", function () {
     addTooltip(totalProteinsCell, "Total proteins");
     addTooltip(totalCarbsCell, "Total carbs");
     addTooltip(totalFatsCell, "Total fats");
-    console.log("Total values updated successfully!");
+    // console.log("Total values updated successfully!");
   }
   function addTooltip(element, message) {
-    console.log("Adding tooltip to:", element, "with message:", message);
+    // console.log("Adding tooltip to:", element, "with message:", message);
     if (element.style.color === "red") {
       element.setAttribute("title", "Reduce the amount of " + message);
     } else {
@@ -355,7 +481,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // }
   function displayTotalValuesForAllTables() {
     // Display total values for all tables
-    console.log("Displaying total values for all tables");
+    // console.log("Displaying total values for all tables");
 
     var totalValues = {
       totalGrams: 0,
@@ -446,7 +572,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // }
   function updateTotalValuesForAllTables(totalValues) {
     // Update total values for all tables
-    console.log("Updating total values for all tables");
+    // console.log("Updating total values for all tables");
 
     // Update total values for each table
     for (let i = 1; i <= 3; i++) {
@@ -456,10 +582,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Display total values for all tables
     displayTotalValuesForAllTables();
-    console.log("Total values for all tables updated successfully!");
+    // console.log("Total values for all tables updated successfully!");
   }
   function getColor(value, nutrient, result) {
-    console.log("Getting color for value:", value, "and nutrient:", nutrient);
+    // console.log("Getting color for value:", value, "and nutrient:", nutrient);
     var dailyNorms = {
       grams: 75,
       calories: result,
@@ -469,7 +595,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     var color = value > dailyNorms[nutrient] ? "red" : "white";
-    console.log("Color:", color);
+    // console.log("Color:", color);
     return color;
   }
 
@@ -479,6 +605,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function getRecipeByName(name) {
+    return recipes.find(function (recipe) {
+      return recipe.name === name;
+    });
+  }
   var saveToPdfButton = document.querySelector(".second-section__buttonLast");
   if (saveToPdfButton) {
     saveToPdfButton.addEventListener("click", saveTablesToPdf);

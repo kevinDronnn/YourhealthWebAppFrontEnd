@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         // Store the JWT token in localStorage
         localStorage.setItem("token", data.token);
-
         // Redirect to home page or do other actions as needed
         window.location.href = "Home page.html";
       })

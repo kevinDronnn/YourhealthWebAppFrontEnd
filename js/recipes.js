@@ -1,4 +1,5 @@
-let globalData; // Глобальная переменная для хранения данных
+let globalData = localStorage.getItem("username"); // Глобальная переменная для хранения данных
+let authority = localStorage.getItem("authority"); // Глобальная переменная для хранения данных
 document.addEventListener("DOMContentLoaded", function () {
   // Функция для получения JWT токена из localStorage
   function getToken() {
@@ -36,8 +37,15 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .then((data) => {
       // Используем данные напрямую внутри обработчика события
-      console.log(data); // Выводим данные в консоль или делаем другие операции
-      globalData = data; // Сохраняем данные в глобальной переменной при необходимости
+      // console.log(data); // Выводим данные в консоль или делаем другие операции
+      // globalData = data; // Сохраняем данные в глобальной переменной при необходимости
+      if (globalData && globalData != null && globalData != "anonymousUser") {
+        const navMenuList = document.querySelector(".nav-menu__list");
+        const lastListItem = navMenuList.lastElementChild;
+        const lastLink = lastListItem.querySelector("a");
+        lastLink.setAttribute("href", "Profile.html");
+        lastLink.innerText = "Profile";
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -46,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function openModal() {
   console.log(globalData);
-  if (globalData.username != null || !isNaN(globalData.username)) {
+  if (globalData != null || !isNaN(globalData)) {
     document.getElementById("modal").style.display = "block";
   } else {
     window.location.href = "loginPage.html";
@@ -106,7 +114,7 @@ $(document).ready(function () {
       formData.append("products_name", productName);
       formData.append("products_grams", productGrams);
     });
-    formData.append("authorName", globalData.username);
+    formData.append("authorName", globalData);
     $.ajax({
       url: "http://localhost:8080/api/recipe",
       type: "POST",
@@ -187,6 +195,31 @@ function openModalSecond(recipe) {
     listItem.append(listItemProductGrams);
     productList.appendChild(listItem);
   });
+  const totalRecipeInfo = document.createElement("div");
+  const totalGramsRecipe = document.createElement("p");
+  const totalCalsRecipe = document.createElement("p");
+  const totalCarbsRecipe = document.createElement("p");
+  const totalProteinsRecipe = document.createElement("p");
+  const totalFatsRecipe = document.createElement("p");
+
+  totalRecipeInfo.classList.add("recipeInfo");
+  totalGramsRecipe.classList.add("recipeInfoP");
+  totalCalsRecipe.classList.add("recipeInfoP");
+  totalCarbsRecipe.classList.add("recipeInfoP");
+  totalProteinsRecipe.classList.add("recipeInfoP");
+  totalFatsRecipe.classList.add("recipeInfoP");
+
+  totalGramsRecipe.textContent = "Total grams: " + recipe.grams;
+  totalCalsRecipe.textContent = "Total cals: " + recipe.cals;
+  totalCarbsRecipe.textContent = "Total carbs: " + recipe.carbs;
+  totalProteinsRecipe.textContent = "Total proteins: " + recipe.proteins;
+  totalFatsRecipe.textContent = "Total fats: " + recipe.fats;
+
+  totalRecipeInfo.append(totalGramsRecipe);
+  totalRecipeInfo.append(totalCalsRecipe);
+  totalRecipeInfo.append(totalCarbsRecipe);
+  totalRecipeInfo.append(totalProteinsRecipe);
+  totalRecipeInfo.append(totalFatsRecipe);
 
   const commentAddTitle = document.createElement("h2");
   commentAddTitle.innerText = "Comments: ";
@@ -216,19 +249,21 @@ function openModalSecond(recipe) {
 
   let commentShowedConteiner;
   recipe.commentsList.forEach((comment) => {
-    commentShowedConteiner = document.createElement("div"); //коммент заготовка
-    commentShowedConteiner.classList.add("commentShowedConteiner"); //коммент заготовка
+    if (comment || comment.length != 0) {
+      commentShowedConteiner = document.createElement("div"); //коммент заготовка
+      commentShowedConteiner.classList.add("commentShowedConteiner"); //коммент заготовка
 
-    const commentShowedTitle = document.createElement("h2"); //коммент заготовка
-    commentShowedTitle.innerText = "Author: " + comment.authorName; //коммент заготовка
-    commentShowedTitle.classList.add("commentShowedTitle"); //коммент заготовка
+      const commentShowedTitle = document.createElement("h2"); //коммент заготовка
+      commentShowedTitle.innerText = "Author: " + comment.authorName; //коммент заготовка
+      commentShowedTitle.classList.add("commentShowedTitle"); //коммент заготовка
 
-    const commentShowedText = document.createElement("p"); //коммент заготовка
-    commentShowedText.innerText = comment.text; //коммент заготовка
-    commentShowedText.classList.add("commentShowedText"); //коммент заготовка
+      const commentShowedText = document.createElement("p"); //коммент заготовка
+      commentShowedText.innerText = comment.text; //коммент заготовка
+      commentShowedText.classList.add("commentShowedText"); //коммент заготовка
 
-    commentShowedConteiner.appendChild(commentShowedTitle); //коммент заготовка
-    commentShowedConteiner.appendChild(commentShowedText); //коммент заготовка
+      commentShowedConteiner.appendChild(commentShowedTitle); //коммент заготовка
+      commentShowedConteiner.appendChild(commentShowedText); //коммент заготовка
+    }
   });
 
   form.appendChild(commentAddText);
@@ -242,11 +277,12 @@ function openModalSecond(recipe) {
   contentContainer.appendChild(descriptionElement);
   contentContainer.appendChild(productListHeading);
   contentContainer.appendChild(productList);
+  contentContainer.appendChild(totalRecipeInfo);
   contentContainer.appendChild(commentAddTitle);
   contentContainer.appendChild(commentAddConteiner);
-
-  contentContainer.appendChild(commentShowedConteiner); //коммент заготовка
-
+  if (commentShowedConteiner) {
+    contentContainer.appendChild(commentShowedConteiner); //коммент заготовка
+  }
   modalContentSecond.appendChild(contentContainer);
 
   modalSecond.appendChild(modalContentSecond);
@@ -331,7 +367,9 @@ function fetchAndDisplayRecipes() {
           list_item.appendChild(list_img);
           list_item.appendChild(list_header);
           list_item.appendChild(list_par);
-          list_item.appendChild(deleteButton);
+          if (authority === "ADMIN") {
+            list_item.appendChild(deleteButton);
+          }
 
           container.addEventListener("click", () => {
             openModalSecond(recipe);
@@ -366,7 +404,7 @@ function sendData(comment) {
   const url = "http://localhost:8080/api/comment";
 
   // Получаем имя автора, например, из глобальных данных
-  const authorName = globalData.username;
+  const authorName = globalData;
 
   // Проверяем, что комментарий и имя автора заполнены
   if (comment && authorName) {
