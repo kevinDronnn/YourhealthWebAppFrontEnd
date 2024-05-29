@@ -1,5 +1,6 @@
 let globalData = localStorage.getItem("username"); // Глобальная переменная для хранения данных
 let emailUser;
+
 document.addEventListener("DOMContentLoaded", function () {
   // Функция для получения JWT токена из localStorage
   function getToken() {
@@ -447,28 +448,29 @@ function openModalSecond(recipe) {
   commentAddHr.classList.add("commentAddHr");
 
   let commentShowedConteiner;
-  recipe.commentsList.forEach((comment) => {
-    if (comment || comment.length != 0) {
-      commentShowedConteiner = document.createElement("div"); //коммент заготовка
-      commentShowedConteiner.classList.add("commentShowedConteiner"); //коммент заготовка
-
-      const commentShowedTitle = document.createElement("h2"); //коммент заготовка
-      commentShowedTitle.innerText = "Author: " + comment.authorName; //коммент заготовка
-      commentShowedTitle.classList.add("commentShowedTitle"); //коммент заготовка
-
-      const commentShowedText = document.createElement("p"); //коммент заготовка
-      commentShowedText.innerText = comment.text; //коммент заготовка
-      commentShowedText.classList.add("commentShowedText"); //коммент заготовка
-
-      commentShowedConteiner.appendChild(commentShowedTitle); //коммент заготовка
-      commentShowedConteiner.appendChild(commentShowedText); //коммент заготовка
-    }
-  });
 
   form.appendChild(commentAddText);
   form.appendChild(commentAddButton);
   commentAddContent.appendChild(form);
   commentAddContent.appendChild(commentAddHr);
+
+  recipe.commentsList.forEach((comment) => {
+    const commentShowedConteiner = document.createElement("div"); // Контейнер для комментария
+    commentShowedConteiner.classList.add("commentShowedConteiner"); // Контейнер для комментария
+
+    const commentShowedTitle = document.createElement("h2"); // Заголовок комментария
+    commentShowedTitle.innerText = "Автор: " + comment.authorName; // Заголовок комментария
+    commentShowedTitle.classList.add("commentShowedTitle"); // Заголовок комментария
+
+    const commentShowedText = document.createElement("p"); // Текст комментария
+    commentShowedText.innerText = comment.text; // Текст комментария
+    commentShowedText.classList.add("commentShowedText"); // Текст комментария
+
+    commentShowedConteiner.appendChild(commentShowedTitle); // Добавляем заголовок комментария в контейнер
+    commentShowedConteiner.appendChild(commentShowedText); // Добавляем текст комментария в контейнер
+
+    commentAddContent.appendChild(commentShowedConteiner); // Добавляем контейнер комментария в основной контейнер
+  });
 
   commentAddConteiner.appendChild(commentAddContent);
 
@@ -614,4 +616,575 @@ function sendData(comment) {
   } else {
     alert("Please enter a comment."); // Если поля пустые, выводим сообщение об ошибке
   }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// Функция для загрузки данных о тренировках с сервера
+function loadWorkouts() {
+  const userName = globalData; // Поменяйте это на ваше значение
+  fetch("http://localhost:8080/api/getAllWorkouts/" + userName)
+    .then((response) => response.json())
+    .then((data) => {
+      workoutData = data.map((workout) => ({
+        date: new Date(workout.date),
+        duration: workout.duration,
+      }));
+      // После загрузки данных обновляем график
+      updateChart();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+// Функция для обновления графика
+function updateChart() {
+  // Удаляем предыдущий график
+  d3.select("#chart-svg").remove();
+
+  // Создаем новый график
+  const margin = { top: 20, right: 30, bottom: 80, left: 40 };
+  const width = 600 - margin.left - margin.right;
+  const height = 400 - margin.top - margin.bottom;
+
+  const svg = d3
+    .select("#chart-container")
+    .append("svg")
+    .attr("id", "chart-svg")
+    .attr("width", width + margin.left + margin.right) // Изменено
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // Построение графика на основе данных
+  const x = d3
+    .scaleBand()
+    .domain(workoutData.map((d) => d.date))
+    .range([0, width])
+    .padding(0.1);
+
+  const y = d3
+    .scaleLinear()
+    .domain([0, d3.max(workoutData, (d) => d.duration)])
+    .nice()
+    .range([height, 0]);
+
+  svg
+    .append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("transform", "rotate(-45)")
+    .attr("dx", "-0.8em") // Изменено
+    .attr("dy", "0.15em"); // Изменено;
+
+  svg.append("g").call(d3.axisLeft(y));
+
+  svg
+    .selectAll(".bar")
+    .data(workoutData)
+    .enter()
+    .append("rect")
+    .attr("class", "bar")
+    .attr("x", (d) => x(d.date))
+    .attr("width", x.bandwidth())
+    .attr("y", (d) => y(d.duration))
+    .attr("height", (d) => height - y(d.duration));
+
+  // Обновляем счетчики
+  const totalWorkouts = workoutData.length;
+  const totalTime = workoutData.reduce((total, d) => total + d.duration, 0);
+  const averageTime = totalTime / totalWorkouts;
+
+  d3.select("#workout-count").text("Number of workouts: " + totalWorkouts);
+  d3.select("#total-time").text("Total time in the gym: " + totalTime + " min");
+  d3.select("#average-time").text(
+    "Avarage time in the gym: " + averageTime.toFixed(2) + " min"
+  );
+}
+
+// Открытие модального окна при нажатии на кнопку "Добавить тренировку"
+document
+  .getElementById("add-workout-btn")
+  .addEventListener("click", function () {
+    const modal = document.getElementById("myModalWork");
+    modal.style.display = "block";
+  });
+
+// Закрытие модального окна при нажатии на кнопку "Close"
+document
+  .getElementsByClassName("closeWork")[0]
+  .addEventListener("click", function () {
+    const modal = document.getElementById("myModalWork");
+    modal.style.display = "none";
+  });
+
+document
+  .getElementById("add-duration-btnWork")
+  .addEventListener("click", function () {
+    const durationInput = document.getElementById("duration-inputWork");
+    const duration = parseInt(durationInput.value);
+    if (!isNaN(duration) && duration > 0) {
+      const userName = globalData; // Поменяйте это на ваше значение
+      console.log(userName);
+      console.log(duration);
+      console.log(new Date().toISOString().slice(0, 10));
+      fetch("http://localhost:8080/api/saveWorkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: userName,
+          date: new Date().toISOString().slice(0, 10),
+          duration: duration,
+        }),
+      })
+        .then(() => {
+          // Загружаем новые данные и обновляем график
+          loadWorkouts();
+          // Закрываем модальное окно
+          const modal = document.getElementById("myModalWork");
+          modal.style.display = "none";
+          // Очищаем поле ввода продолжительности тренировки
+          durationInput.value = "";
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      alert(
+        "Пожалуйста, введите корректное значение продолжительности тренировки."
+      );
+    }
+  });
+
+// Инициализация графика
+loadWorkouts();
+// Функция для загрузки данных о тренировках с сервера
+function loadWorkouts() {
+  fetch(`http://localhost:8080/api/getAllWorkouts/${globalData}`)
+    .then((response) => response.json())
+    .then((data) => {
+      workoutData = data.map((workout) => ({
+        date: workout.date.substring(0, workout.date.lastIndexOf("T")),
+        duration: workout.duration,
+      }));
+
+      // После загрузки данных обновляем график
+      updateChart();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+// Функция для обновления графика
+function updateChart() {
+  // Удаляем предыдущий график
+  d3.select("#chart-svg").remove();
+
+  // Создаем новый график
+  const margin = { top: 20, right: 30, bottom: 80, left: 40 };
+  const width = 600 - margin.left - margin.right;
+  const height = 400 - margin.top - margin.bottom;
+
+  const svg = d3
+    .select("#chart-container")
+    .append("svg")
+    .attr("id", "chart-svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // Построение графика на основе данных
+  const x = d3
+    .scaleBand()
+    .domain(workoutData.map((d) => d.date))
+    .range([0, width])
+    .padding(0.1);
+
+  const y = d3
+    .scaleLinear()
+    .domain([0, d3.max(workoutData, (d) => d.duration)])
+    .nice()
+    .range([height, 0]);
+
+  svg
+    .append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("transform", "rotate(-45)")
+    .attr("dx", "-0.8em")
+    .attr("dy", "0.15em");
+
+  svg.append("g").call(d3.axisLeft(y));
+
+  svg
+    .selectAll(".bar")
+    .data(workoutData)
+    .enter()
+    .append("rect")
+    .attr("class", "bar")
+    .attr("x", (d) => x(d.date))
+    .attr("width", x.bandwidth())
+    .attr("y", (d) => y(d.duration))
+    .attr("height", (d) => height - y(d.duration))
+    .attr("fill", "steelblue")
+    .on("mouseover", function (event, d) {
+      // Показываем продолжительность тренировки над колонкой при наведении
+      const xPos = x(d.date) + x.bandwidth() / 2;
+      const yPos = y(d.duration);
+
+      svg
+        .append("text")
+        .attr("class", "duration-text")
+        .attr("x", xPos)
+        .attr("y", yPos)
+        .attr("text-anchor", "middle")
+        .attr("dy", "-0.5em") // Отступ от верхнего края колонки
+        .text(d.duration + " min");
+    })
+    .on("mouseout", function () {
+      // Убираем текст при уходе курсора
+      svg.selectAll(".duration-text").remove();
+    });
+
+  // Обновляем счетчики
+  const totalWorkouts = workoutData.length;
+  const totalTime = workoutData.reduce((total, d) => total + d.duration, 0);
+  const averageTime = totalTime / totalWorkouts;
+
+  d3.select("#workout-count").text("Number of workouts: " + totalWorkouts);
+  d3.select("#total-time").text("Total time in the gym: " + totalTime + " min");
+  d3.select("#average-time").text(
+    "Avarage time in the gym: " + averageTime.toFixed(2) + " min"
+  );
+}
+
+// Открытие модального окна при нажатии на кнопку "Добавить тренировку"
+document
+  .getElementById("add-workout-btn")
+  .addEventListener("click", function () {
+    const modal = document.getElementById("myModalWork");
+    modal.style.display = "block";
+  });
+
+// Закрытие модального окна при нажатии на кнопку "Close"
+document
+  .getElementsByClassName("closeWork")[0]
+  .addEventListener("click", function () {
+    const modal = document.getElementById("myModalWork");
+    modal.style.display = "none";
+  });
+
+document
+  .getElementById("add-duration-btnWork")
+  .addEventListener("click", function () {
+    const durationInput = document.getElementById("duration-inputWork");
+    const duration = parseInt(durationInput.value);
+    if (!isNaN(duration) && duration > 0) {
+      const userName = globalData; // Поменяйте это на ваше значение
+      console.log(userName);
+      console.log(duration);
+      console.log(new Date().toISOString().slice(0, 10));
+      fetch("http://localhost:8080/api/saveWorkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: userName,
+          date: new Date().toISOString().slice(0, 10),
+          duration: duration,
+        }),
+      })
+        .then(() => {
+          // Загружаем новые данные и обновляем график
+          loadWorkouts();
+          updateChart();
+          // Закрываем модальное окно
+          const modal = document.getElementById("myModalWork");
+          modal.style.display = "none";
+          // Очищаем поле ввода продолжительности тренировки
+          durationInput.value = "";
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      alert(
+        "Пожалуйста, введите корректное значение продолжительности тренировки."
+      );
+    }
+  });
+
+// Инициализация графика
+loadWorkouts();
+
+///////////////////////////////////////////////////////////////////////
+// Добавление веса при нажатии на кнопку "Add current weight"
+document
+  .getElementById("add-weight-btn")
+  .addEventListener("click", function () {
+    const modal = document.getElementById("myModalWeight");
+    modal.style.display = "block";
+  });
+
+// Закрытие модального окна при нажатии на кнопку "Close"
+document
+  .getElementsByClassName("closeWeight")[0]
+  .addEventListener("click", function () {
+    const modal = document.getElementById("myModalWeight");
+    modal.style.display = "none";
+  });
+
+// Добавление веса при нажатии на кнопку "Добавить"
+document
+  .getElementById("add-weight-btnWeight")
+  .addEventListener("click", function () {
+    const weightInput = document.getElementById("weight-inputWeight");
+    const weight = parseFloat(weightInput.value);
+    console.log(weight);
+    if (!isNaN(weight) && weight > 0) {
+      const userName = globalData; // Поменяйте это на ваше значение
+      const currentDate = new Date().toISOString().slice(0, 10);
+      fetch("http://localhost:8080/api/saveWeight", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: userName, // Здесь установка имени пользователя
+          weight: weight,
+          date: currentDate,
+        }),
+      })
+        .then((data) => {
+          updateWeightChart(); // Обновляем график
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      // Очищаем поле ввода веса
+      weightInput.value = "";
+    } else {
+      alert("Пожалуйста, введите корректное значение вашего веса.");
+    }
+  });
+
+// Инициализация графика веса
+function updateWeightChart() {
+  // Получаем данные о весе с сервера
+  fetch(`http://localhost:8080/api/getAllWeights/${globalData}`)
+    .then((response) => response.json())
+    .then((data) => {
+      weightData = data;
+      console.log(weightData); // Добавим этот вывод для отладки
+
+      // Удаляем предыдущий график
+      d3.select("#chart-svgWeight").remove();
+
+      // Создаем новый график
+      const margin = { top: 20, right: 30, bottom: 80, left: 40 };
+      const width = 600 - margin.left - margin.right;
+      const height = 400 - margin.top - margin.bottom;
+
+      const svg = d3
+        .select("#chart-containerWeight")
+        .append("svg")
+        .attr("id", "chart-svgWeight")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      // Построение графика на основе данных
+      const x = d3
+        .scaleBand()
+        .domain(weightData.map((d) => new Date(d.date).toLocaleDateString()))
+        .range([0, width])
+        .padding(0.1)
+        .paddingOuter(0.2);
+
+      const y = d3
+        .scaleLinear()
+        .domain([0, d3.max(weightData, (d) => d.weight)])
+        .nice()
+        .range([height, 0]);
+
+      svg
+        .append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("transform", "rotate(-45)")
+        .attr("dx", "-0.8em")
+        .attr("dy", "0.15em");
+
+      svg.append("g").call(d3.axisLeft(y));
+
+      svg
+        .selectAll(".bar")
+        .data(weightData)
+        .enter()
+        .append("rect")
+        .attr("class", "bar")
+        .attr("x", (d) => x(new Date(d.date).toLocaleDateString()))
+        .attr("width", x.bandwidth())
+        .attr("y", (d) => y(d.weight))
+        .attr("height", (d) => height - y(d.weight))
+        .on("mouseover", function (event, d) {
+          // Показываем вес над колонкой при наведении
+          const xPos =
+            x(new Date(d.date).toLocaleDateString()) + x.bandwidth() / 2;
+          const yPos = y(d.weight);
+
+          svg
+            .append("text")
+            .attr("class", "weight-text")
+            .attr("x", xPos)
+            .attr("y", yPos)
+            .attr("text-anchor", "middle")
+            .attr("dy", "-0.5em") // Отступ от верхнего края колонки
+            .text(d.weight + " kgs");
+        })
+        .on("mouseout", function () {
+          // Убираем текст при уходе курсора
+          svg.selectAll(".weight-text").remove();
+        });
+
+      // Рассчитываем средний вес
+      const totalWeights = weightData.reduce((total, d) => total + d.weight, 0);
+      const averageWeight = totalWeights / weightData.length;
+
+      d3.select("#weight-count").text(
+        "Average weight: " + averageWeight.toFixed(2)
+      );
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+// Инициализация графика веса
+updateWeightChart();
+
+let selectedDate = ""; // глобальная переменная для выбранной даты
+let notesMap = {};
+
+$(document).ready(function () {
+  $("#calendar").datepicker({
+    dateFormat: "yy-mm-dd",
+    beforeShowDay: function (date) {
+      let dateString = $.datepicker.formatDate("yy-mm-dd", date);
+      return [true, notesMap[dateString] ? "hasNote" : ""];
+    },
+    onSelect: function (dateText) {
+      selectedDate = dateText; // Сохраняем выбранную дату
+      if (notesMap[selectedDate]) {
+        getNotes();
+      } else {
+        showModal(dateText);
+      }
+    },
+  });
+
+  $(".modalCalendarClose").click(function () {
+    $("#modalCalendar").hide();
+  });
+
+  $(".notes-modal-close").click(function () {
+    $("#notesModal").hide();
+  });
+
+  $(window).click(function (event) {
+    if (event.target == $("#modalCalendar")[0]) {
+      $("#modalCalendar").hide();
+    }
+    if (event.target == $("#notesModal")[0]) {
+      $("#notesModal").hide();
+    }
+  });
+
+  loadNotes();
+});
+
+function showModal(date) {
+  $("#modalDate").text(date);
+  $("#modalCalendar").show();
+}
+
+function saveNote() {
+  let note = $("#note").val();
+
+  fetch("http://localhost:8080/api/saveNote", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      date: selectedDate,
+      text: note,
+      name: globalData, // Используем имя пользователя для сохранения заметки
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Произошла ошибка при сохранении заметки!");
+      }
+      $("#modalCalendar").hide();
+      loadNotes(); // Обновляем заметки после сохранения новой
+    })
+    .catch((error) => {
+      alert(error.message);
+      console.error(error);
+    });
+}
+
+function getNotes() {
+  let formattedDate = $.datepicker.formatDate(
+    "yy-mm-dd",
+    new Date(selectedDate)
+  );
+  fetch(`http://localhost:8080/api/getNote/${formattedDate}/${globalData}`)
+    .then((response) => response.json())
+    .then((data) => {
+      let notesHTML = document.getElementById("notes");
+      let notesCont = document.getElementById("modalDate");
+      notesCont.innerHTML = data.date;
+      notesHTML.innerHTML = ""; // Очистить предыдущий контент перед добавлением нового
+
+      if (data.text) {
+        notesHTML.innerHTML += `<div class="notesText">${data.text}</div>`;
+      } else {
+        notesHTML.innerHTML = "<div>No notes for this date</div>";
+      }
+      $("#notesModal").show();
+    })
+    .catch((error) => {
+      console.error("Ошибка при получении записей:", error);
+    });
+}
+
+function loadNotes() {
+  fetch(`http://localhost:8080/api/getAllNotes/${globalData}`)
+    .then((response) => response.json())
+    .then((data) => {
+      notesMap = {};
+      data.forEach((note) => {
+        let dateString = note.date.split("T")[0]; // Преобразование даты в формат "yyyy-MM-dd"
+        notesMap[dateString] = note;
+      });
+      $("#calendar").datepicker("refresh"); // Обновляем календарь для отображения дней с заметками
+    })
+    .catch((error) => {
+      console.error("Ошибка при загрузке всех заметок:", error);
+    });
 }

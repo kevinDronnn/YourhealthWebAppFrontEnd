@@ -35,8 +35,11 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "Home page.html";
       })
       .catch((error) => {
-        // Handle errors
-        console.error("There was a problem with the fetch operation:", error);
+        console.error("Error:", error);
+        const loginErrorMessage = document.getElementById(
+          "login-error-message"
+        );
+        loginErrorMessage.style.display = "inline";
       });
   });
 });

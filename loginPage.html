@@ -30,28 +30,31 @@
                 </nav>
             </div>
     </section>
-
-    <div class="container2">
-        <div class="section2">
-            <form id="login-form">
-                <ul class="user-data__listLogin data">
-                    <li class="user-data__listLogin-item username">
-                        <label class="usernameLabel" for="username">Username:</label>
-                        <input type="text" id="username" name="name" placeholder="Enter username" required>
-                    </li>
-                    <li class="user-data__listLogin">
-                        <label class="passwordLabel" for="password">Password:</label>
-                        <input type="password" id="password" name="password" placeholder="Enter password" required>
-                    </li>
-                    <div class="login-buttons">
-                        <li class="user-data__listLogin">
-                            <input type="submit" value="Sign in">
-                        </li>
-                    </div>
-                    <li class="user-data__listLogin-item"><a href="registerPage.html">Don't have an account? Sign up</a></li>
-                </ul>
-            </form>
+<div class="container2">
+    <div class="section2">
+        <div id="login-error-message" style="color: red; margin-bottom: 20px; display: none;">Invalid username or password
         </div>
+        <form id="login-form">
+            <ul class="user-data__listLogin data">
+                <li class="user-data__listLogin-item username">
+                    <label class="usernameLabel" for="username">Username:</label>
+                    <input type="text" id="username" name="name" placeholder="Enter username" required>
+                </li>
+                <li class="user-data__listLogin">
+                    <label class="passwordLabel" for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter password" required>
+                </li>
+                <li class="login-buttons">
+                    <input type="submit" value="Sign in">
+                </li>
+                <li class="user-data__listLogin-item"><a href="registerPage.html">Don't have an account? Sign up</a>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+
+
     </div>
 </body>
 

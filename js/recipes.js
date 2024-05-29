@@ -248,29 +248,29 @@ function openModalSecond(recipe) {
   commentAddHr.classList.add("commentAddHr");
 
   let commentShowedConteiner;
-  recipe.commentsList.forEach((comment) => {
-    if (comment || comment.length != 0) {
-      commentShowedConteiner = document.createElement("div"); //коммент заготовка
-      commentShowedConteiner.classList.add("commentShowedConteiner"); //коммент заготовка
-
-      const commentShowedTitle = document.createElement("h2"); //коммент заготовка
-      commentShowedTitle.innerText = "Author: " + comment.authorName; //коммент заготовка
-      commentShowedTitle.classList.add("commentShowedTitle"); //коммент заготовка
-
-      const commentShowedText = document.createElement("p"); //коммент заготовка
-      commentShowedText.innerText = comment.text; //коммент заготовка
-      commentShowedText.classList.add("commentShowedText"); //коммент заготовка
-
-      commentShowedConteiner.appendChild(commentShowedTitle); //коммент заготовка
-      commentShowedConteiner.appendChild(commentShowedText); //коммент заготовка
-    }
-  });
 
   form.appendChild(commentAddText);
   form.appendChild(commentAddButton);
   commentAddContent.appendChild(form);
   commentAddContent.appendChild(commentAddHr);
 
+  recipe.commentsList.forEach((comment) => {
+    const commentShowedConteiner = document.createElement("div"); // Контейнер для комментария
+    commentShowedConteiner.classList.add("commentShowedConteiner"); // Контейнер для комментария
+
+    const commentShowedTitle = document.createElement("h2"); // Заголовок комментария
+    commentShowedTitle.innerText = "Автор: " + comment.authorName; // Заголовок комментария
+    commentShowedTitle.classList.add("commentShowedTitle"); // Заголовок комментария
+
+    const commentShowedText = document.createElement("p"); // Текст комментария
+    commentShowedText.innerText = comment.text; // Текст комментария
+    commentShowedText.classList.add("commentShowedText"); // Текст комментария
+
+    commentShowedConteiner.appendChild(commentShowedTitle); // Добавляем заголовок комментария в контейнер
+    commentShowedConteiner.appendChild(commentShowedText); // Добавляем текст комментария в контейнер
+
+    commentAddContent.appendChild(commentShowedConteiner); // Добавляем контейнер комментария в основной контейнер
+  });
   commentAddConteiner.appendChild(commentAddContent);
 
   contentContainer.appendChild(authorName);

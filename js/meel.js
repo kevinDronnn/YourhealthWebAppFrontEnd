@@ -111,12 +111,6 @@ function calculateAndOutputResult() {
     gender !== undefined &&
     goal !== undefined
   ) {
-    // console.log("Result of calculation:", weight);
-    // console.log("Result of calculation:", height);
-    // console.log("Result of calculation:", age);
-    // console.log("Result of calculation:", activityLevel);
-    // console.log("Result of calculation:", gender);
-
     var result =
       (weight * 10 + height * 6.25 - age * 5 + (gender === "m" ? 5 : -161)) *
       activityLevel;
@@ -193,6 +187,8 @@ document.addEventListener("DOMContentLoaded", function () {
         var modalContent = document.getElementById(modalContentId);
         if (modalContent) {
           modalContent.innerHTML = "";
+          const productContent = document.createElement("div");
+          productContent.setAttribute("id", "contentProducts");
 
           products.forEach(function (product) {
             var button = document.createElement("button");
@@ -234,51 +230,65 @@ document.addEventListener("DOMContentLoaded", function () {
               document.getElementById(modalId).style.display = "none";
             });
 
-            modalContent.appendChild(button);
+            productContent.appendChild(button);
+            modalContent.appendChild(productContent);
           });
           /////////////////////////////////////////////////
-          recipes.forEach(function (recipe) {
-            var button = document.createElement("button");
-            button.classList.add("buttonModal");
-            button.textContent = recipe.name;
-            button.setAttribute("name", "recipe");
-            console.log(recipe);
+          const par = document.createElement("p");
+          par.classList.add("parMeelRecipe");
+          par.innerText = "Your recipes: ";
+          const recipeContent = document.createElement("div");
+          recipeContent.setAttribute("id", "contentRecipes");
+          recipeContent.append(par);
+          modalContent.append(recipeContent);
+          if (recipes.length == 0) {
+            var parNoRecipes = document.createElement("p");
+            parNoRecipes.innerText = "You don`t have any recipes";
+            parNoRecipes.classList.add("parNoRecipes");
+            recipeContent.appendChild(parNoRecipes);
+          } else {
+            recipes.forEach(function (recipe) {
+              var button = document.createElement("button");
+              button.classList.add("buttonModal");
+              button.textContent = recipe.name;
+              button.setAttribute("name", "recipe");
 
-            button.addEventListener("click", function () {
-              if (selectedCell && button.getAttribute("name") == "recipe") {
-                var row = selectedCell.closest("tr");
-                which = "recipe";
-                var gramsInput = row.querySelector(".editable-grams");
-                gramsInput.value = recipe.grams;
+              button.addEventListener("click", function () {
+                if (selectedCell && button.getAttribute("name") == "recipe") {
+                  var row = selectedCell.closest("tr");
+                  which = "recipe";
+                  var gramsInput = row.querySelector(".editable-grams");
+                  gramsInput.value = recipe.grams;
 
-                row.cells[0].textContent = recipe.name;
-                row.cells[2].textContent = (
-                  (recipe.cals * (parseFloat(gramsInput.value) || 0)) /
-                  recipe.grams
-                ).toFixed(2);
-                row.cells[3].textContent = (
-                  (recipe.proteins * (parseFloat(gramsInput.value) || 0)) /
-                  recipe.grams
-                ).toFixed(2);
-                row.cells[4].textContent = (
-                  (recipe.carbs * (parseFloat(gramsInput.value) || 0)) /
-                  recipe.grams
-                ).toFixed(2);
-                row.cells[5].textContent = (
-                  (recipe.fats * (parseFloat(gramsInput.value) || 0)) /
-                  recipe.grams
-                ).toFixed(2);
+                  row.cells[0].textContent = recipe.name;
+                  row.cells[2].textContent = (
+                    (recipe.cals * (parseFloat(gramsInput.value) || 0)) /
+                    recipe.grams
+                  ).toFixed(2);
+                  row.cells[3].textContent = (
+                    (recipe.proteins * (parseFloat(gramsInput.value) || 0)) /
+                    recipe.grams
+                  ).toFixed(2);
+                  row.cells[4].textContent = (
+                    (recipe.carbs * (parseFloat(gramsInput.value) || 0)) /
+                    recipe.grams
+                  ).toFixed(2);
+                  row.cells[5].textContent = (
+                    (recipe.fats * (parseFloat(gramsInput.value) || 0)) /
+                    recipe.grams
+                  ).toFixed(2);
 
-                updateTotalValues(table);
-                updateTotalValuesForAllTables();
-                displayTotalValuesForAllTables();
-              }
+                  updateTotalValues(table);
+                  updateTotalValuesForAllTables();
+                  displayTotalValuesForAllTables();
+                }
 
-              document.getElementById(modalId).style.display = "none";
+                document.getElementById(modalId).style.display = "none";
+              });
+
+              recipeContent.appendChild(button);
             });
-
-            modalContent.appendChild(button);
-          });
+          }
           ////////////////////////////////////////////////
           document.getElementById(modalId).style.display = "block";
         } else {
@@ -409,7 +419,7 @@ document.addEventListener("DOMContentLoaded", function () {
     totalCarbsCell.textContent = totalCarbs.toFixed(2);
     totalFatsCell.textContent = totalFats.toFixed(2);
 
-    var dailyNormCals = 2000;
+    var dailyNormCals = resOfCalcGlobal;
     var dailyNormProteins = (0.3 * dailyNormCals) / 4;
     var dailyNormFats = (0.3 * dailyNormCals) / 9;
     var dailyNormCarbs = (0.4 * dailyNormCals) / 4;
@@ -425,10 +435,8 @@ document.addEventListener("DOMContentLoaded", function () {
     addTooltip(totalProteinsCell, "Total proteins");
     addTooltip(totalCarbsCell, "Total carbs");
     addTooltip(totalFatsCell, "Total fats");
-    // console.log("Total values updated successfully!");
   }
   function addTooltip(element, message) {
-    // console.log("Adding tooltip to:", element, "with message:", message);
     if (element.style.color === "red") {
       element.setAttribute("title", "Reduce the amount of " + message);
     } else {
@@ -436,53 +444,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // function displayTotalValuesForAllTables() {
-  //   var totalContainer = document.getElementById("totalContainer");
+  document.addEventListener("DOMContentLoaded", function () {
+    displayTotalValuesForAllTables();
+    initializeTableListeners();
+  });
 
-  //   if (totalContainer) {
-  //     var totalValues = {
-  //       totalGrams: 0,
-  //       totalCals: 0,
-  //       totalProteins: 0,
-  //       totalCarbs: 0,
-  //       totalFats: 0,
-  //     };
-
-  //     for (let i = 1; i <= 3; i++) {
-  //       var table = document.getElementById("mealTable" + i);
-
-  //       var totalGramsCell = table.querySelector(
-  //         ".last.total#totalGrams" + table.id.charAt(table.id.length - 1)
-  //       );
-  //       var totalCalsCell = table.querySelector(
-  //         ".last.total#totalCals" + table.id.charAt(table.id.length - 1)
-  //       );
-  //       var totalProteinsCell = table.querySelector(
-  //         ".last.total#totalProteins" + table.id.charAt(table.id.length - 1)
-  //       );
-  //       var totalCarbsCell = table.querySelector(
-  //         ".last.total#totalCarbs" + table.id.charAt(table.id.length - 1)
-  //       );
-  //       var totalFatsCell = table.querySelector(
-  //         ".last.total#totalFats" + table.id.charAt(table.id.length - 1)
-  //       );
-
-  //       totalValues.totalGrams += parseFloat(totalGramsCell.textContent) || 0;
-  //       totalValues.totalCals += parseFloat(totalCalsCell.textContent) || 0;
-  //       totalValues.totalProteins +=
-  //         parseFloat(totalProteinsCell.textContent) || 0;
-  //       totalValues.totalCarbs += parseFloat(totalCarbsCell.textContent) || 0;
-  //       totalValues.totalFats += parseFloat(totalFatsCell.textContent) || 0;
-  //     }
-  //     updateTotalValues(table);
-  //     updateTotalValuesForAllTables(totalValues);
-  //     displayTotalValuesForAllTables();
-  //   }
-  // }
   function displayTotalValuesForAllTables() {
-    // Display total values for all tables
-    // console.log("Displaying total values for all tables");
-
     var totalValues = {
       totalGrams: 0,
       totalCals: 0,
@@ -494,7 +461,6 @@ document.addEventListener("DOMContentLoaded", function () {
     for (let i = 1; i <= 3; i++) {
       var table = document.getElementById("mealTable" + i);
 
-      // Calculate total values for each table
       var totalGramsCell = table.querySelector(".last.total#totalGrams" + i);
       var totalCalsCell = table.querySelector(".last.total#totalCals" + i);
       var totalProteinsCell = table.querySelector(
@@ -503,15 +469,14 @@ document.addEventListener("DOMContentLoaded", function () {
       var totalCarbsCell = table.querySelector(".last.total#totalCarbs" + i);
       var totalFatsCell = table.querySelector(".last.total#totalFats" + i);
 
-      totalValues.totalGrams += parseFloat(totalGramsCell.textContent) || 0;
-      totalValues.totalCals += parseFloat(totalCalsCell.textContent) || 0;
+      totalValues.totalGrams += parseFloat(totalGramsCell?.textContent) || 0;
+      totalValues.totalCals += parseFloat(totalCalsCell?.textContent) || 0;
       totalValues.totalProteins +=
-        parseFloat(totalProteinsCell.textContent) || 0;
-      totalValues.totalCarbs += parseFloat(totalCarbsCell.textContent) || 0;
-      totalValues.totalFats += parseFloat(totalFatsCell.textContent) || 0;
+        parseFloat(totalProteinsCell?.textContent) || 0;
+      totalValues.totalCarbs += parseFloat(totalCarbsCell?.textContent) || 0;
+      totalValues.totalFats += parseFloat(totalFatsCell?.textContent) || 0;
     }
 
-    // Update total values in the totalContainer element
     var totalContainer = document.getElementById("totalContainer");
 
     if (totalContainer) {
@@ -532,48 +497,118 @@ document.addEventListener("DOMContentLoaded", function () {
         "<p class='total_par'>Total Fats: " +
         totalValues.totalFats.toFixed(2) +
         "</p>";
+
+      applyColorCoding(totalContainer, totalValues);
     }
   }
-  // function updateTotalValuesForAllTables(totalValues) {
-  //   console.log("Updating total values for all tables");
-  //   var totalContainer = document.getElementById("totalContainer");
 
-  //   if (totalContainer) {
-  //     var result = calculateAndOutputResult(); // Получаем значение result
-  //     totalContainer.innerHTML =
-  //       "<h2 class='total_h'>Total Values for All Tables</h2>" +
-  //       "<p class='total_par'>Total Grams: <span style='color: " +
-  //       getColor(totalValues.totalGrams, "grams", result) + // Передаем значение result
-  //       "'>" +
-  //       totalValues.totalGrams.toFixed(2) +
-  //       "</span></p>" +
-  //       "<p class='total_par'>Total Calories: <span style='color: " +
-  //       getColor(totalValues.totalCals, "calories", result) + // Передаем значение result
-  //       "'>" +
-  //       totalValues.totalCals.toFixed(2) +
-  //       "</span></p>" +
-  //       "<p class='total_par'>Total Proteins: <span style='color: " +
-  //       getColor(totalValues.totalProteins, "proteins", result) + // Передаем значение result
-  //       "'>" +
-  //       totalValues.totalProteins.toFixed(2) +
-  //       "</span></p>" +
-  //       "<p class='total_par'>Total Carbs: <span style='color: " +
-  //       getColor(totalValues.totalCarbs, "carbs", result) + // Передаем значение result
-  //       "'>" +
-  //       totalValues.totalCarbs.toFixed(2) +
-  //       "</span></p>" +
-  //       "<p class='total_par'>Total Fats: <span style='color: " +
-  //       getColor(totalValues.totalFats, "fats", result) + // Передаем значение result
-  //       "'>" +
-  //       totalValues.totalFats.toFixed(2) +
-  //       "</span></p>";
-  //   }
-  //   console.log("Total values for all tables updated successfully!");
-  // }
+  function applyColorCoding(container, values) {
+    var dailyNormCals = resOfCalcGlobal;
+    var dailyNormProteins = (0.3 * dailyNormCals) / 4;
+    var dailyNormFats = (0.3 * dailyNormCals) / 9;
+    var dailyNormCarbs = (0.4 * dailyNormCals) / 4;
+    console.log(values);
+    const dailyNorm = {
+      totalGrams: values.grams, // Example norm value
+      totalCals: dailyNormCals, // Example norm value
+      totalProteins: dailyNormProteins, // Example norm value
+      totalCarbs: dailyNormCarbs, // Example norm value
+      totalFats: dailyNormFats, // Example norm value
+    };
+
+    const ranges = {
+      high: 50,
+      mid: 20,
+    };
+
+    const colors = {
+      high: "red",
+      mid: "green",
+      low: "orange",
+    };
+
+
+    const totalGramsElement = container.querySelector(
+      ".total_par:nth-child(2)"
+    );
+    const totalCalsElement = container.querySelector(".total_par:nth-child(3)");
+    const totalProteinsElement = container.querySelector(
+      ".total_par:nth-child(4)"
+    );
+    const totalCarbsElement = container.querySelector(
+      ".total_par:nth-child(5)"
+    );
+    const totalFatsElement = container.querySelector(".total_par:nth-child(6)");
+
+    if (totalGramsElement) {
+      totalGramsElement.style.color = getColor(
+        values.totalGrams,
+        dailyNorm.totalGrams,
+        ranges,
+        colors
+      );
+    } else {
+      console.error("totalGramsElement not found");
+    }
+
+    if (totalCalsElement) {
+      totalCalsElement.style.color = getColor(
+        values.totalCals,
+        dailyNorm.totalCals,
+        ranges,
+        colors
+      );
+    } else {
+      console.error("totalCalsElement not found");
+    }
+
+    if (totalProteinsElement) {
+      totalProteinsElement.style.color = getColor(
+        values.totalProteins,
+        dailyNorm.totalProteins,
+        ranges,
+        colors
+      );
+    } else {
+      console.error("totalProteinsElement not found");
+    }
+
+    if (totalCarbsElement) {
+      totalCarbsElement.style.color = getColor(
+        values.totalCarbs,
+        dailyNorm.totalCarbs,
+        ranges,
+        colors
+      );
+    } else {
+      console.error("totalCarbsElement not found");
+    }
+
+    if (totalFatsElement) {
+      totalFatsElement.style.color = getColor(
+        values.totalFats,
+        dailyNorm.totalFats,
+        ranges,
+        colors
+      );
+    } else {
+      console.error("totalFatsElement not found");
+    }
+  }
+
+  function getColor(value, norm, ranges, colors) {
+    if (value > norm) {
+      return colors.high;
+    } else if (value >= norm - ranges.mid && value <= norm + ranges.mid) {
+      return colors.mid;
+    } else if (value < norm - ranges.high) {
+      return colors.low;
+    } else {
+      return "white";
+    }
+  }
+
   function updateTotalValuesForAllTables(totalValues) {
-    // Update total values for all tables
-    // console.log("Updating total values for all tables");
-
     // Update total values for each table
     for (let i = 1; i <= 3; i++) {
       var table = document.getElementById("mealTable" + i);
@@ -583,20 +618,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Display total values for all tables
     displayTotalValuesForAllTables();
     // console.log("Total values for all tables updated successfully!");
-  }
-  function getColor(value, nutrient, result) {
-    // console.log("Getting color for value:", value, "and nutrient:", nutrient);
-    var dailyNorms = {
-      grams: 75,
-      calories: result,
-      proteins: (0.3 * result) / 4,
-      fats: (0.3 * result) / 9,
-      carbs: (0.4 * result) / 4,
-    };
-
-    var color = value > dailyNorms[nutrient] ? "red" : "white";
-    // console.log("Color:", color);
-    return color;
   }
 
   function getProductByName(name) {
@@ -722,19 +743,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-// $(document).ready(function () {
-//   $(".second-section__t").hide();
-//   $(".week").hide();
-//   $("#totalContainer").hide();
-//   $(".second-section__buttonLast").hide();
 
-//   $("#calculateButton").click(function () {
-//     $(".second-section__t").show();
-//     $(".week").show();
-//     $("#totalContainer").show();
-//     $(".second-section__buttonLast").show();
-//   });
-// });
 $(document).ready(function () {
   $(".second-section__t").hide();
   $(".week").hide();
@@ -742,7 +751,7 @@ $(document).ready(function () {
   $(".second-section__buttonLast").hide();
 
   $("#calculateButton").click(function () {
-    if (!isNaN(resOfCalcGlobal)) {
+    if (resOfCalcGlobal > 0) {
       // Если результат не равен нулю, показываем вторую секцию
       $(".second-section__t").show();
       $(".week").show();

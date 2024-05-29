@@ -24,6 +24,10 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="icons/fav/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="js/profile.js" defer></script>
 </head>
 
@@ -93,11 +97,69 @@
                                 </form>
                             </div>
                         </div>
-                </div>
 
+                </div>
             </div>
         </div>
     </section>
+    <div id="workout-dates">Training schedule</div>
+    <div class="chart-container" id="chart-container"></div>
+    <button id="add-workout-btn">Add a workout</button>
+    <div id="workout-count">Number of workouts: 0</div>
+    <div id="total-time">Total time in the gym: 0 min</div>
+    <div id="average-time">Avarage time in the gym: 0 min</div>
+
+    <!-- Модальное окно -->
+    <div id="myModalWork" class="modalWork">
+        <div class="modal-contentWork">
+            <span class="closeWork">&times;</span>
+            <p class="myModalWorkTitle">Enter workout duration (in minutes):</p>
+            <input type="text" id="duration-inputWork" placeholder="workout duration" required>
+            <button id="add-duration-btnWork">Add</button>
+        </div>
+    </div>
+
+    <div id="weight-dates">Weight statistic</div>
+    <div class="chart-containerWeight" id="chart-containerWeight"></div>
+    <button id="add-weight-btn">Add current weight</button>
+    <div id="weight-count">Average weight: 0</div>
+
+        <!-- Модальное окно -->
+    <div id="myModalWeight" class="modalWeight">
+        <div class="modal-contentWeight">
+            <span class="closeWeight">&times;</span>
+            <p class="myModalWeightTitle">Enter your weight:</p>
+            <input type="text" id="weight-inputWeight" placeholder="weight" required>
+            <button id="add-weight-btnWeight">Add</button>
+        </div>
+    </div>
+
+<div class="calendar">
+    <h2 class="calendarHead">Calendar with notes</h2>
+    <div id="calendar"></div>
+</div>
+
+<div id="modalCalendar" class="modalCalendar">
+    <div class="modalCalendar-content">
+        <span class="modalCalendarClose">&times;</span>
+        <div class="modalCalendar-body">
+            <h3>Enter note</h3>
+            <textarea id="note" placeholder="Enter note"></textarea>
+            <button onclick="saveNote()">Save</button>
+        </div>
+    </div>
+</div>
+
+<div id="notesModal" class="notes-modal">
+    <div class="notes-modal-content">
+        <span class="notes-modal-close">&times;</span>
+        <div class="notes-modal-body">
+            <h3 class="modalDateTitle">Notes for <span id="modalDate"></span></h3>
+            <div id="notes"></div>
+        </div>
+    </div>
+</div>
+
         <section class="third-section section">
             <div class="third-section__container container2">
                 <h2 class="third-section__container-title globTitle">Your advices</h2>
