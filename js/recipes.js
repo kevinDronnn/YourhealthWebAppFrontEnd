@@ -392,7 +392,7 @@ function fetchAndDisplayRecipes() {
 }
 
 async function deleteRecipe(recipeId) {
-  await fetch(`http://localhost:8080/api/recipe/${recipeId}`, {
+  await fetch(`http://localhost:8080/api/recipe/delete/${recipeId}`, {
     method: "DELETE",
   });
 }
