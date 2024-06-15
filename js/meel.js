@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
   totalContainer.style.color = "white";
   totalContainer.style.textAlign = "center";
   totalContainer.style.position = "relative";
-  totalContainer.style.left = "100px";
+  totalContainer.style.left = "0px";
 
   document.body.appendChild(totalContainer);
   let which;
