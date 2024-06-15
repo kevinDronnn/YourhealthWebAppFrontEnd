@@ -53,8 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function openModal() {
-  console.log(globalData);
-  if (globalData != null || !isNaN(globalData)) {
+  
+  if (globalData != null && !isNaN(globalData) && globalData!="anonymousUser") {
     document.getElementById("modal").style.display = "block";
   } else {
     window.location.href = "loginPage.html";
@@ -363,7 +363,7 @@ function fetchAndDisplayRecipes() {
           deleteButton.innerText = "Delete";
 
           list_header.innerText = recipe.name;
-          list_par.innerText = recipe.description;
+          list_par.innerText = "Author: "+recipe.authorName;
           list_item.appendChild(list_img);
           list_item.appendChild(list_header);
           list_item.appendChild(list_par);
@@ -399,7 +399,9 @@ async function deleteRecipe(recipeId) {
 
 // Функция для отправки данных на сервер
 function sendData(comment) {
-  console.log(comment);
+  if (globalData != null && !isNaN(globalData) && globalData!="anonymousUser") {
+    document.getElementById("modal").style.display = "block";
+  
   // URL сервера
   const url = "http://localhost:8080/api/comment";
 
@@ -444,6 +446,9 @@ function sendData(comment) {
   } else {
     alert("Please enter a comment."); // Если поля пустые, выводим сообщение об ошибке
   }
+} else {
+  window.location.href = "loginPage.html";
+}
 }
 
 fetchAndDisplayRecipes();

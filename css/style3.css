@@ -484,8 +484,9 @@ select {
 }
 
 .second-section {
+  display: block;
   position: relative;
-  left: 300px;
+  left: 550px;
   max-width: 1100px;
 }
 .second-section__title {
@@ -524,7 +525,7 @@ select {
 }
 .second-section__buttonLast {
   position: relative;
-  left: 400px;
+  left: 300px;
   margin-bottom: 50px;
   width: 180px;
   height: 46px;
@@ -546,7 +547,7 @@ select {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  left: -50px;
+  left: -100px;
   text-align: center;
   background: #3F7D30;
   border-radius: 15px;
@@ -837,10 +838,37 @@ a:visited {
 
 #contentRecipes {
   max-height: 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   overflow-y: auto;
 }
 
 #contentProducts {
   max-height: 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   overflow-y: auto;
+}
+
+.week {
+  position: relative;
+  left: -100px;
+}
+
+.table-center {
+  position: relative;
+  left: -100px;
+}
+
+#totalContainer {
+  position: relative;
+  left: -100px;
 }

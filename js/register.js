@@ -40,5 +40,9 @@ form.addEventListener("submit", function (event) {
     .catch((error) => {
       // Handle error
       console.error("Error:", error);
+      const registerErrorMessage = document.getElementById(
+        "register-error-message"
+      );
+      registerErrorMessage.style.display = "inline";
     });
 });

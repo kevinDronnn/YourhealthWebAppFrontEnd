@@ -1668,3 +1668,7 @@ th {
   overflow-x: hidden;
   word-wrap: break-word;
 }
+
+.noRecipe {
+  text-align: center;
+}
