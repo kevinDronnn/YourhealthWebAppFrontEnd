@@ -53,8 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function openModal() {
-  
-  if (globalData != null && !isNaN(globalData) && globalData!="anonymousUser") {
+  if (globalData != null && globalData != "anonymousUser") {
     document.getElementById("modal").style.display = "block";
   } else {
     window.location.href = "loginPage.html";
@@ -68,6 +67,7 @@ function closeModal() {
 document.getElementById("add").addEventListener("click", function () {
   openModal();
 });
+
 document.getElementById("closeModal").addEventListener("click", function () {
   document.getElementById("modal").style.display = "none";
   document.getElementById("overlay").style.display = "none";
@@ -75,7 +75,6 @@ document.getElementById("closeModal").addEventListener("click", function () {
 
 document.getElementById("addFields").addEventListener("click", function () {
   addFields();
-  event.stopPropagation();
 });
 
 function addFields() {
@@ -176,11 +175,7 @@ function openModalSecond(recipe) {
 
   const productList = document.createElement("ul");
   productList.classList.add("product-list");
-  // recipe.products.forEach((product) => {
-  //   const listItem = document.createElement("li");
-  //   listItem.innerText = `${product.productName}: ${product.grams} grams`;
-  //   productList.appendChild(listItem);
-  // });
+
   recipe.products.forEach((product) => {
     const listItem = document.createElement("li");
     const listItemProductName = document.createElement("label");
@@ -195,6 +190,7 @@ function openModalSecond(recipe) {
     listItem.append(listItemProductGrams);
     productList.appendChild(listItem);
   });
+
   const totalRecipeInfo = document.createElement("div");
   const totalGramsRecipe = document.createElement("p");
   const totalCalsRecipe = document.createElement("p");
@@ -363,7 +359,7 @@ function fetchAndDisplayRecipes() {
           deleteButton.innerText = "Delete";
 
           list_header.innerText = recipe.name;
-          list_par.innerText = "Author: "+recipe.authorName;
+          list_par.innerText = "Author: " + recipe.authorName;
           list_item.appendChild(list_img);
           list_item.appendChild(list_header);
           list_item.appendChild(list_par);
@@ -399,56 +395,60 @@ async function deleteRecipe(recipeId) {
 
 // Функция для отправки данных на сервер
 function sendData(comment) {
-  if (globalData != null && !isNaN(globalData) && globalData!="anonymousUser") {
+  if (
+    globalData != null &&
+    !isNaN(globalData) &&
+    globalData != "anonymousUser"
+  ) {
     document.getElementById("modal").style.display = "block";
-  
-  // URL сервера
-  const url = "http://localhost:8080/api/comment";
 
-  // Получаем имя автора, например, из глобальных данных
-  const authorName = globalData;
+    // URL сервера
+    const url = "http://localhost:8080/api/comment";
 
-  // Проверяем, что комментарий и имя автора заполнены
-  if (comment && authorName) {
-    // Тело запроса (отправляем текст комментария и имя автора)
-    const body = JSON.stringify({
-      text: comment,
-      authorName: authorName,
-      recipes: recipeDataComment.id,
-    });
-    console.log(body);
+    // Получаем имя автора, например, из глобальных данных
+    const authorName = globalData;
 
-    // Опции запроса
-    const options = {
-      method: "POST",
-      body: body,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    // Отправка запроса на сервер
-    fetch(url, options)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Обработка успешного ответа от сервера
-        console.log(data);
-      })
-      .catch((error) => {
-        // Обработка ошибки
-        console.error("There was an error!", error);
+    // Проверяем, что комментарий и имя автора заполнены
+    if (comment && authorName) {
+      // Тело запроса (отправляем текст комментария и имя автора)
+      const body = JSON.stringify({
+        text: comment,
+        authorName: authorName,
+        recipes: recipeDataComment.id,
       });
+      console.log(body);
+
+      // Опции запроса
+      const options = {
+        method: "POST",
+        body: body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      // Отправка запроса на сервер
+      fetch(url, options)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Обработка успешного ответа от сервера
+          console.log(data);
+        })
+        .catch((error) => {
+          // Обработка ошибки
+          console.error("There was an error!", error);
+        });
+    } else {
+      alert("Please enter a comment."); // Если поля пустые, выводим сообщение об ошибке
+    }
   } else {
-    alert("Please enter a comment."); // Если поля пустые, выводим сообщение об ошибке
+    window.location.href = "loginPage.html";
   }
-} else {
-  window.location.href = "loginPage.html";
-}
 }
 
 fetchAndDisplayRecipes();

@@ -127,12 +127,44 @@ function calculateAndOutputResult() {
     }
     resOfCalcGlobal = result;
     console.log("Result of calculation:", result);
+    // Расчет дневной нормы КБЖУ
+    var dailyNormCals = resOfCalcGlobal;
+    var dailyNormProteins = (0.3 * dailyNormCals) / 4;
+    var dailyNormFats = (0.3 * dailyNormCals) / 9;
+    var dailyNormCarbs = (0.4 * dailyNormCals) / 4;
+
+    // Обновление текста в элементах с классом dailyNormUser_par
+    updateDailyNorm({
+      totalCals: dailyNormCals.toFixed(2),
+      totalProteins: dailyNormProteins.toFixed(2),
+      totalCarbs: dailyNormCarbs.toFixed(2),
+      totalFats: dailyNormFats.toFixed(2),
+    });
     return result;
   } else {
     alert("Please enter all information.");
   }
 }
+// Функция для обновления дневной нормы в HTML
+function updateDailyNorm(dailyNorm) {
+  const dailyNormContainer = document.querySelector(".dailyNormUser_pars");
+  if (!dailyNormContainer) {
+    console.error("dailyNormUser_pars not found");
+    return;
+  }
 
+  const dailyNormElements =
+    dailyNormContainer.querySelectorAll(".dailyNormUser_par");
+  if (dailyNormElements.length < 4) {
+    console.error("Not enough dailyNormUser_par elements found");
+    return;
+  }
+
+  dailyNormElements[0].innerHTML = `Total Calories: ${dailyNorm.totalCals} kcal`;
+  dailyNormElements[1].innerHTML = `Total Proteins: ${dailyNorm.totalProteins} g`;
+  dailyNormElements[2].innerHTML = `Total Carbs: ${dailyNorm.totalCarbs} g`;
+  dailyNormElements[3].innerHTML = `Total Fats: ${dailyNorm.totalFats} g`;
+}
 document
   .getElementById("calculateButton")
   .addEventListener("click", function () {
@@ -306,7 +338,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
-        if (which == "product") {
+        if (which === "product") {
           var row = targetInput.closest("tr");
           var product = getProductByName(row.cells[0].textContent);
 
@@ -503,22 +535,35 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function applyColorCoding(container, values) {
-    var dailyNormCals = resOfCalcGlobal;
+    var dailyNormCals =
+      typeof resOfCalcGlobal === "number" ? resOfCalcGlobal : 0;
     var dailyNormProteins = (0.3 * dailyNormCals) / 4;
     var dailyNormFats = (0.3 * dailyNormCals) / 9;
     var dailyNormCarbs = (0.4 * dailyNormCals) / 4;
-    console.log(values);
+
     const dailyNorm = {
-      totalGrams: values.grams, // Example norm value
-      totalCals: dailyNormCals, // Example norm value
-      totalProteins: dailyNormProteins, // Example norm value
-      totalCarbs: dailyNormCarbs, // Example norm value
-      totalFats: dailyNormFats, // Example norm value
+      totalCals: dailyNormCals,
+      totalProteins: dailyNormProteins,
+      totalCarbs: dailyNormCarbs,
+      totalFats: dailyNormFats,
     };
 
+    console.log(dailyNorm);
+
     const ranges = {
-      high: 50,
-      mid: 20,
+      cals: { high: dailyNorm.totalCals * 0.2, mid: dailyNorm.totalCals * 0.1 },
+      proteins: {
+        high: dailyNorm.totalProteins * 0.1,
+        mid: dailyNorm.totalProteins * 0.05,
+      },
+      fats: {
+        high: dailyNorm.totalFats * 0.1,
+        mid: dailyNorm.totalFats * 0.05,
+      },
+      carbs: {
+        high: dailyNorm.totalCarbs * 0.2,
+        mid: dailyNorm.totalCarbs * 0.1,
+      },
     };
 
     const colors = {
@@ -527,10 +572,6 @@ document.addEventListener("DOMContentLoaded", function () {
       low: "orange",
     };
 
-
-    const totalGramsElement = container.querySelector(
-      ".total_par:nth-child(2)"
-    );
     const totalCalsElement = container.querySelector(".total_par:nth-child(3)");
     const totalProteinsElement = container.querySelector(
       ".total_par:nth-child(4)"
@@ -540,22 +581,11 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     const totalFatsElement = container.querySelector(".total_par:nth-child(6)");
 
-    if (totalGramsElement) {
-      totalGramsElement.style.color = getColor(
-        values.totalGrams,
-        dailyNorm.totalGrams,
-        ranges,
-        colors
-      );
-    } else {
-      console.error("totalGramsElement not found");
-    }
-
     if (totalCalsElement) {
       totalCalsElement.style.color = getColor(
-        values.totalCals,
+        values.totalCals || 0,
         dailyNorm.totalCals,
-        ranges,
+        ranges.cals,
         colors
       );
     } else {
@@ -564,9 +594,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (totalProteinsElement) {
       totalProteinsElement.style.color = getColor(
-        values.totalProteins,
+        values.totalProteins || 0,
         dailyNorm.totalProteins,
-        ranges,
+        ranges.proteins,
         colors
       );
     } else {
@@ -575,9 +605,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (totalCarbsElement) {
       totalCarbsElement.style.color = getColor(
-        values.totalCarbs,
+        values.totalCarbs || 0,
         dailyNorm.totalCarbs,
-        ranges,
+        ranges.carbs,
         colors
       );
     } else {
@@ -586,9 +616,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (totalFatsElement) {
       totalFatsElement.style.color = getColor(
-        values.totalFats,
+        values.totalFats || 0,
         dailyNorm.totalFats,
-        ranges,
+        ranges.fats,
         colors
       );
     } else {
@@ -597,12 +627,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function getColor(value, norm, ranges, colors) {
-    if (value > norm) {
+    const deviation = value - norm;
+
+    if (deviation > ranges.high) {
       return colors.high;
-    } else if (value >= norm - ranges.mid && value <= norm + ranges.mid) {
-      return colors.mid;
-    } else if (value < norm - ranges.high) {
+    } else if (deviation < -ranges.high) {
       return colors.low;
+    } else if (Math.abs(deviation) <= ranges.mid) {
+      return colors.mid;
     } else {
       return "white";
     }
@@ -630,72 +662,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return recipes.find(function (recipe) {
       return recipe.name === name;
     });
-  }
-  var saveToPdfButton = document.querySelector(".second-section__buttonLast");
-  if (saveToPdfButton) {
-    saveToPdfButton.addEventListener("click", saveTablesToPdf);
-  }
-
-  function saveTablesToPdf() {
-    var pdf = new jsPDF();
-
-    function getTableContent(tableId) {
-      var content = [];
-      var table = document.getElementById(tableId);
-
-      if (table) {
-        var rows = table.querySelectorAll("tr");
-
-        rows.forEach(function (row) {
-          var rowData = [];
-          var cells = row.cells;
-
-          for (var i = 0; i < cells.length; i++) {
-            var input = cells[i].querySelector(".editable-grams");
-            if (input) {
-              rowData.push(input.value.trim());
-            } else {
-              rowData.push(cells[i].textContent.trim());
-            }
-          }
-
-          content.push(rowData);
-        });
-      }
-
-      return content;
-    }
-
-    function addTableToPdf(tableId, startX, startY) {
-      var tableContent = getTableContent(tableId);
-
-      var cellWidth = 30;
-      var cellHeight = 10;
-
-      for (var i = 0; i < tableContent.length; i++) {
-        for (var j = 0; j < tableContent[i].length; j++) {
-          if (i === 0) {
-            pdf.text(startX + j * cellWidth, startY, tableContent[i][j]);
-          } else {
-            pdf.text(
-              startX + (j + 1) * cellWidth,
-              startY + i * cellHeight,
-              tableContent[i][j]
-            );
-          }
-        }
-      }
-    }
-
-    addTableToPdf("mealTable1", 10, 10);
-    pdf.addPage();
-
-    addTableToPdf("mealTable2", 10, 10);
-    pdf.addPage();
-
-    addTableToPdf("mealTable3", 10, 10);
-
-    pdf.save("mealTables.pdf");
   }
 
   $(document).ready(function () {
@@ -744,19 +710,106 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-$(document).ready(function () {
-  $(".second-section__t").hide();
-  $(".week").hide();
-  $("#totalContainer").hide();
-  $(".second-section__buttonLast").hide();
+var saveToPdfButton = document.querySelector(".second-section__buttonLast");
+if (saveToPdfButton) {
+  saveToPdfButton.addEventListener("click", saveTablesToPdf);
+}
 
-  $("#calculateButton").click(function () {
-    if (resOfCalcGlobal > 0) {
-      // Если результат не равен нулю, показываем вторую секцию
-      $(".second-section__t").show();
-      $(".week").show();
-      $("#totalContainer").show();
-      $(".second-section__buttonLast").show();
+function saveTablesToPdf() {
+  const { jsPDF } = window.jspdf;
+
+  var pdf = new jsPDF();
+
+  function getTableContent(tableId) {
+    var content = [];
+    var table = document.getElementById(tableId);
+
+    if (table) {
+      var rows = table.querySelectorAll("tr");
+
+      rows.forEach(function (row, rowIndex) {
+        var rowData = [];
+        var cells = row.cells;
+
+        // For the header row, don't shift
+        if (rowIndex === 0) {
+          for (var i = 0; i < cells.length; i++) {
+            var input = cells[i].querySelector(".editable-grams");
+            if (input) {
+              rowData.push(input.value.trim());
+            } else {
+              rowData.push(cells[i].textContent.trim());
+            }
+          }
+        } else {
+          // For data rows, add an empty string at the beginning
+          rowData.push("");
+          for (var i = 0; i < cells.length; i++) {
+            var input = cells[i].querySelector(".editable-grams");
+            if (input) {
+              rowData.push(input.value.trim());
+            } else {
+              rowData.push(cells[i].textContent.trim());
+            }
+          }
+        }
+        content.push(rowData);
+      });
     }
-  });
-});
+
+    return content;
+  }
+
+  function addTableToPdf(tableId) {
+    var tableContent = getTableContent(tableId);
+
+    if (tableContent.length > 0) {
+      pdf.autoTable({
+        head: [tableContent[0]],
+        body: tableContent.slice(1),
+        startY: pdf.autoTable.previous.finalY || 10,
+        styles: {
+          cellWidth: "wrap",
+          minCellHeight: 10,
+          fontSize: 10,
+        },
+        columnStyles: {
+          0: { cellWidth: 20 }, // Empty column
+          1: { cellWidth: 40 }, // Food column
+          2: { cellWidth: 20 }, // Grams column
+          3: { cellWidth: 20 }, // Cals column
+          4: { cellWidth: 25 }, // Proteins column
+          5: { cellWidth: 20 }, // Carbs column
+          6: { cellWidth: 20 }, // Fats column
+        },
+      });
+    }
+  }
+
+  addTableToPdf("mealTable1");
+  pdf.addPage();
+
+  addTableToPdf("mealTable2");
+  pdf.addPage();
+
+  addTableToPdf("mealTable3");
+
+  pdf.save("mealTables.pdf");
+}
+
+// $(document).ready(function () {
+//   $(".second-section__t").hide();
+//   $(".week").hide();
+//   $("#totalContainer").hide();
+//   $(".second-section__buttonLast").hide();
+
+//   $("#calculateButton").click(function () {
+//     if (resOfCalcGlobal > 0) {
+//       // Если результат не равен нулю, показываем вторую секцию
+//       $(".second-section__t").show();
+//       $(".week").show();
+//       $("#totalContainer").show();
+//       $(".second-section__buttonLast").show();
+//     }
+//   });
+// });

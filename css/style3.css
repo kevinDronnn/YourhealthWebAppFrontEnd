@@ -792,7 +792,7 @@ a:visited {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 100px;
+  min-width: 100px;
   height: 46px;
   background: #262726;
   color: white;
@@ -801,6 +801,13 @@ a:visited {
   font-size: 18px;
   margin-right: 50px;
   margin-bottom: 20px;
+  cursor: pointer;
+  -webkit-transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
+}
+
+.buttonModal:hover {
+  background-color: rgba(56, 56, 56, 0.5490196078);
 }
 
 .parMeelRecipe {
@@ -825,9 +832,6 @@ a:visited {
   padding: 10px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -838,23 +842,11 @@ a:visited {
 
 #contentRecipes {
   max-height: 200px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   overflow-y: auto;
 }
 
 #contentProducts {
   max-height: 200px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   overflow-y: auto;
 }
 
@@ -871,4 +863,44 @@ a:visited {
 #totalContainer {
   position: relative;
   left: -100px;
+}
+
+.dailyNormUser {
+  margin-bottom: 50px;
+  position: relative;
+  left: -125px;
+}
+.dailyNormUser_title {
+  font-size: 18px;
+  color: white;
+  margin-bottom: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  text-align: center;
+}
+.dailyNormUser_pars {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  text-align: center;
+}
+.dailyNormUser_par {
+  font-size: 18px;
+  color: white;
+  margin-right: 40px;
 }

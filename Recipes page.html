@@ -62,11 +62,11 @@
 
     <form id="combinedForm" enctype="multipart/form-data">
         <label for="name mar">Name:</label>
-        <input class="modalField mar" type="text" id="recipe_name" name="recipe_name" required><br>
+        <input class="modalField mar" type="text" id="recipe_name" name="recipe_name" maxlength="35" required><br>
     
         <p class="mar" for="description">Description:</p>
         <textarea class="modalDesc mar" id="recipe_description" name="recipe_description"
-            placeholder="Describe how to make your recipe." required></textarea><br>
+            placeholder="Describe how to make your recipe." maxlength="750" required></textarea><br>
     
         <label class="mar" for="image">Image:</label>
         <input class="img mar" type="file" id="recipe_image" name="recipe_image" accept="image/*" required><br>
@@ -75,31 +75,31 @@
         <div class="lists">
             <ul id="l-productList">
                 <li class="li-left"><input class="left modalField" type="text" name="products_name[]" placeholder="name">
-                     <input class="right modalField" type="text" name="products_grams[]" placeholder="grams"><br>
+                     <input class="right modalField" type="text" name="products_grams[]" placeholder="grams" maxlength="20"><br>
                 </li>
                 <li class="li-left"><input class="left modalField" type="text" name="products_name[]" placeholder="name">
-                     <input class="right modalField" type="text" name="products_grams[]" placeholder="grams"><br>
+                     <input class="right modalField" type="text" name="products_grams[]" placeholder="grams" maxlength="20"><br>
                 </li>
                 <li class="li-left"><input class="left modalField" type="text" name="products_name[]" placeholder="name"> 
-                    <input class="right modalField" type="text" name="products_grams[]" placeholder="grams"><br>
+                    <input class="right modalField" type="text" name="products_grams[]" placeholder="grams" maxlength="20"><br>
                 </li>
             </ul>
         </div>
         <div class="recipeInfoDiv">
             <label for="total_grams">Total grams:</label>
-            <input class="recipeInfoPAdd" name="total_grams" id="totalGramsInput"></input>
+            <input class="recipeInfoPAdd" name="total_grams" id="totalGramsInput" required></input>
 
             <label for="cals">Cals:</label>
-            <input class="recipeInfoPAdd" name="cals" id="calsInput"></input>
+            <input class="recipeInfoPAdd" name="cals" id="calsInput" required></input>
 
             <label for="carbs">Carbs:</label>
-            <input class="recipeInfoPAdd" name="carbs" id="carbsInput"></input>
+            <input class="recipeInfoPAdd" name="carbs" id="carbsInput" required></input>
             
             <label for="proteins">Proteins:</label>
-            <input class="recipeInfoPAdd" name="proteins" id="proteinsInput"></input>
+            <input class="recipeInfoPAdd" name="proteins" id="proteinsInput" required></input>
 
             <label for="fats">Fats:</label>
-            <input class="recipeInfoPAdd" name="fats" id="fatsInput"></input>
+            <input class="recipeInfoPAdd" name="fats" id="fatsInput" required></input>
         </div>
         <button class="modalBtnAdd" id="addFields">Add rows</button>
         <input class="modalBtnSub" type="button" value="Submit" id="submitButton">

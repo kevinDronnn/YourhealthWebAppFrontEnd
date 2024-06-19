@@ -164,7 +164,7 @@ const closeModalButton = document.getElementById("closeModal");
 const submitButton = document.getElementById("submitAdvice");
 
 addButton.addEventListener("click", () => {
-  if (globalData != null && !isNaN(globalData) && globalData!="anonymousUser") {
+  if (globalData != null && globalData != "anonymousUser") {
     modal.style.display = "block";
   } else {
     window.location.href = "loginPage.html";

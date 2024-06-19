@@ -541,6 +541,7 @@ h1 {
   background: #3B6C30;
   border-radius: 100px;
   border: none;
+  cursor: pointer;
   width: 218px;
   height: 66px;
 }
@@ -576,4 +577,8 @@ a:visited {
   font-size: 48px;
   margin-bottom: 36px;
   color: white;
+}
+
+.hrefPages {
+  cursor: pointer;
 }

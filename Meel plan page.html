@@ -23,10 +23,8 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="icons/fav/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"
-        integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
-        crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script type="module" src="js/meel.js" defer></script>
@@ -103,9 +101,9 @@
         <!-- Параграф и выпадающий список для Activity level -->
         <p class="second-section__labels">Activity level</p>
         <select class="second-section__select" name="Filter" id="" required>
-            <option value="1,2">Sedentary</option>
-            <option value="1,38">Lightly Active</option>
-            <option value="1,55" selected>Very Active</option>
+            <option value="1,15">Sedentary</option>
+            <option value="1,20">Lightly Active</option>
+            <option value="1,25" selected>Very Active</option>
         </select>
         <br>
 
@@ -151,6 +149,16 @@
         Sun
     </label><br>
 </div>
+        <div class="dailyNormUser">
+            <h2 class="dailyNormUser_title">Your daily norm</h2>
+                <div class="dailyNormUser_pars">
+                <p class="dailyNormUser_par">Total Calories: </p>
+                <p class="dailyNormUser_par">Total Proteins: </p>
+                <p class="dailyNormUser_par">Total Carbs: </p>
+                <p class="dailyNormUser_par">Total Fats: </p>
+                </div>
+        </div>
+
         <div class="second-section__t table-center">
             <!-- Table 1 -->
             <div id="myModal1" class="modal">
