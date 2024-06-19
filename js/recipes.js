@@ -395,11 +395,7 @@ async function deleteRecipe(recipeId) {
 
 // Функция для отправки данных на сервер
 function sendData(comment) {
-  if (
-    globalData != null &&
-    !isNaN(globalData) &&
-    globalData != "anonymousUser"
-  ) {
+  if (globalData != null && globalData != "anonymousUser") {
     document.getElementById("modal").style.display = "block";
 
     // URL сервера
@@ -437,6 +433,7 @@ function sendData(comment) {
         })
         .then((data) => {
           // Обработка успешного ответа от сервера
+          fetchAndDisplayRecipes();
           console.log(data);
         })
         .catch((error) => {

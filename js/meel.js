@@ -797,19 +797,19 @@ function saveTablesToPdf() {
   pdf.save("mealTables.pdf");
 }
 
-// $(document).ready(function () {
-//   $(".second-section__t").hide();
-//   $(".week").hide();
-//   $("#totalContainer").hide();
-//   $(".second-section__buttonLast").hide();
+$(document).ready(function () {
+  $(".second-section__t").hide();
+  $(".week").hide();
+  $("#totalContainer").hide();
+  $(".second-section__buttonLast").hide();
 
-//   $("#calculateButton").click(function () {
-//     if (resOfCalcGlobal > 0) {
-//       // Если результат не равен нулю, показываем вторую секцию
-//       $(".second-section__t").show();
-//       $(".week").show();
-//       $("#totalContainer").show();
-//       $(".second-section__buttonLast").show();
-//     }
-//   });
-// });
+  $("#calculateButton").click(function () {
+    if (resOfCalcGlobal > 0) {
+      // Если результат не равен нулю, показываем вторую секцию
+      $(".second-section__t").show();
+      $(".week").show();
+      $("#totalContainer").show();
+      $(".second-section__buttonLast").show();
+    }
+  });
+});
