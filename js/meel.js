@@ -338,47 +338,66 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
-        if (which === "product") {
-          var row = targetInput.closest("tr");
-          var product = getProductByName(row.cells[0].textContent);
+        var row = targetInput.closest("tr");
+        var itemName = row.cells[0].textContent;
 
-          row.cells[2].textContent = (
-            (product.cals * (parseFloat(targetInput.value) || 0)) /
-            product.grams
-          ).toFixed(2);
-          row.cells[3].textContent = (
-            (product.proteins * (parseFloat(targetInput.value) || 0)) /
-            product.grams
-          ).toFixed(2);
-          row.cells[4].textContent = (
-            (product.carbs * (parseFloat(targetInput.value) || 0)) /
-            product.grams
-          ).toFixed(2);
-          row.cells[5].textContent = (
-            (product.fats * (parseFloat(targetInput.value) || 0)) /
-            product.grams
-          ).toFixed(2);
-        } else {
-          var row = targetInput.closest("tr");
-          var recipe = getRecipeByName(row.cells[0].textContent);
+        // Determine if the item is a product or a recipe
+        var isProduct = products.some((product) => product.name === itemName);
+        var isRecipe = recipes.some((recipe) => recipe.name === itemName);
 
-          row.cells[2].textContent = (
-            (recipe.cals * (parseFloat(targetInput.value) || 0)) /
-            recipe.grams
-          ).toFixed(2);
-          row.cells[3].textContent = (
-            (recipe.proteins * (parseFloat(targetInput.value) || 0)) /
-            recipe.grams
-          ).toFixed(2);
-          row.cells[4].textContent = (
-            (recipe.carbs * (parseFloat(targetInput.value) || 0)) /
-            recipe.grams
-          ).toFixed(2);
-          row.cells[5].textContent = (
-            (recipe.fats * (parseFloat(targetInput.value) || 0)) /
-            recipe.grams
-          ).toFixed(2);
+        if (!isProduct && !isRecipe) {
+          console.error("Item not found in products or recipes");
+          return;
         }
+
+        if (isProduct) {
+          var product = getProductByName(itemName);
+          if (product) {
+            row.cells[2].textContent = (
+              (product.cals * (parseFloat(targetInput.value) || 0)) /
+              product.grams
+            ).toFixed(2);
+            row.cells[3].textContent = (
+              (product.proteins * (parseFloat(targetInput.value) || 0)) /
+              product.grams
+            ).toFixed(2);
+            row.cells[4].textContent = (
+              (product.carbs * (parseFloat(targetInput.value) || 0)) /
+              product.grams
+            ).toFixed(2);
+            row.cells[5].textContent = (
+              (product.fats * (parseFloat(targetInput.value) || 0)) /
+              product.grams
+            ).toFixed(2);
+            which = "product"; // Update 'which' to indicate product is selected
+          } else {
+            console.error("Product not found");
+          }
+        } else if (isRecipe) {
+          var recipe = getRecipeByName(itemName);
+          if (recipe) {
+            row.cells[2].textContent = (
+              (recipe.cals * (parseFloat(targetInput.value) || 0)) /
+              recipe.grams
+            ).toFixed(2);
+            row.cells[3].textContent = (
+              (recipe.proteins * (parseFloat(targetInput.value) || 0)) /
+              recipe.grams
+            ).toFixed(2);
+            row.cells[4].textContent = (
+              (recipe.carbs * (parseFloat(targetInput.value) || 0)) /
+              recipe.grams
+            ).toFixed(2);
+            row.cells[5].textContent = (
+              (recipe.fats * (parseFloat(targetInput.value) || 0)) /
+              recipe.grams
+            ).toFixed(2);
+            which = "recipe"; // Update 'which' to indicate recipe is selected
+          } else {
+            console.error("Recipe not found");
+          }
+        }
+
         updateTotalValues(table);
         displayTotalValuesForAllTables();
       }
@@ -802,14 +821,15 @@ $(document).ready(function () {
   $(".week").hide();
   $("#totalContainer").hide();
   $(".second-section__buttonLast").hide();
+  $(".dailyNormUser").hide();
 
   $("#calculateButton").click(function () {
     if (resOfCalcGlobal > 0) {
-      // Если результат не равен нулю, показываем вторую секцию
       $(".second-section__t").show();
       $(".week").show();
       $("#totalContainer").show();
       $(".second-section__buttonLast").show();
+      $(".dailyNormUser").show();
     }
   });
 });

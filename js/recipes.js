@@ -76,6 +76,10 @@ document.getElementById("closeModal").addEventListener("click", function () {
 document.getElementById("addFields").addEventListener("click", function () {
   addFields();
 });
+function closeModal2() {
+  var modal = document.querySelector(".modal-second");
+  modal.style.display = "none";
+}
 
 function addFields() {
   var lproductList = document.getElementById("l-productList");
@@ -432,9 +436,9 @@ function sendData(comment) {
           return response.json();
         })
         .then((data) => {
-          // Обработка успешного ответа от сервера
+          closeModal2();
+          closeModal();
           fetchAndDisplayRecipes();
-          console.log(data);
         })
         .catch((error) => {
           // Обработка ошибки

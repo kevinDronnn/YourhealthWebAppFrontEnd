@@ -125,10 +125,10 @@ function renderAdviceItem(parent, item) {
     child_div2.append(child_div3);
     child_div.append(child_div2);
     parent.append(child_div);
-
+    console.log(item);
     deleteButton.addEventListener("click", async () => {
-      await deleteAdvice(item.id);
-      await updateAdvices();
+      await deleteAdvice(itemContent.id);
+      location.reload();
     });
   }
 }
@@ -320,12 +320,13 @@ const renderRecipeItem = async (parent, items) => {
 
     deleteButton.addEventListener("click", async () => {
       await deleteRecipe(item.id);
+      location.reload();
     });
   }
 };
 
 async function deleteRecipe(recipeId) {
-  await fetch(`http://localhost:8080/api/delete/${recipeId}`, {
+  await fetch(`http://localhost:8080/api/recipe/delete/${recipeId}`, {
     method: "DELETE",
   });
 }
@@ -375,11 +376,6 @@ function openModalSecond(recipe) {
 
   const productList = document.createElement("ul");
   productList.classList.add("product-list");
-  // recipe.products.forEach((product) => {
-  //   const listItem = document.createElement("li");
-  //   listItem.innerText = `${product.productName}: ${product.grams} grams`;
-  //   productList.appendChild(listItem);
-  // });
   recipe.products.forEach((product) => {
     const listItem = document.createElement("li");
     const listItemProductName = document.createElement("label");
@@ -481,64 +477,6 @@ function openModalSecond(recipe) {
   contentContainer.appendChild(totalRecipeInfo);
   contentContainer.appendChild(commentAddTitle);
   contentContainer.appendChild(commentAddConteiner);
-  // const commentAddTitle = document.createElement("h2");
-  // commentAddTitle.innerText = "Comments: ";
-  // commentAddTitle.classList.add("commentAddTitle");
-
-  // const commentAddConteiner = document.createElement("div");
-  // commentAddConteiner.classList.add("commentAddConteiner");
-
-  // const commentAddContent = document.createElement("div");
-  // commentAddContent.classList.add("commentAddContent");
-
-  // const form = document.createElement("form");
-  // form.setAttribute("id", "commentForm");
-
-  // const commentAddText = document.createElement("textarea");
-  // commentAddText.classList.add("commentAddText");
-  // commentAddText.setAttribute("placeholder", "Enter your comment...");
-  // commentAddText.setAttribute("required", "required");
-
-  // const commentAddButton = document.createElement("input");
-  // commentAddButton.setAttribute("type", "submit");
-  // commentAddButton.value = "Add";
-  // commentAddButton.classList.add("commentAddButton");
-
-  // const commentAddHr = document.createElement("hr");
-  // commentAddHr.classList.add("commentAddHr");
-
-  // let commentShowedConteiner;
-  // recipe.commentsList.forEach((comment) => {
-  //   if (comment || comment.length != 0) {
-  //     commentShowedConteiner = document.createElement("div"); //коммент заготовка
-  //     commentShowedConteiner.classList.add("commentShowedConteiner"); //коммент заготовка
-
-  //     const commentShowedTitle = document.createElement("h2"); //коммент заготовка
-  //     commentShowedTitle.innerText = "Author: " + comment.authorName; //коммент заготовка
-  //     commentShowedTitle.classList.add("commentShowedTitle"); //коммент заготовка
-
-  //     const commentShowedText = document.createElement("p"); //коммент заготовка
-  //     commentShowedText.innerText = comment.text; //коммент заготовка
-  //     commentShowedText.classList.add("commentShowedText"); //коммент заготовка
-
-  //     commentShowedConteiner.appendChild(commentShowedTitle); //коммент заготовка
-  //     commentShowedConteiner.appendChild(commentShowedText); //коммент заготовка
-  //   }
-  // });
-
-  // form.appendChild(commentAddText);
-  // form.appendChild(commentAddButton);
-  // commentAddContent.appendChild(form);
-  // commentAddContent.appendChild(commentAddHr);
-
-  // commentAddConteiner.appendChild(commentAddContent);
-
-  // contentContainer.appendChild(authorName);
-  // contentContainer.appendChild(descriptionElement);
-  // contentContainer.appendChild(productListHeading);
-  // contentContainer.appendChild(productList);
-  // contentContainer.appendChild(commentAddTitle);
-  // contentContainer.appendChild(commentAddConteiner);
   if (commentShowedConteiner) {
     contentContainer.appendChild(commentShowedConteiner); //коммент заготовка
   }
